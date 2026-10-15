@@ -1,0 +1,11 @@
+html,body,#root{margin:0;width:100%;height:100%;overflow:hidden;background:transparent!important}
+body{font-family:'Segoe UI','Microsoft YaHei UI',sans-serif;font-size:13px}
+.native-anchor{position:absolute;pointer-events:none}
+.native-anchor button{pointer-events:auto}
+.native-tray{position:absolute;overflow:visible}
+.native-scroll{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;padding:10px;margin:-10px;box-sizing:content-box}
+.native-empty{padding:14px 16px;border-radius:28px;background:rgba(255,255,255,.94);color:#666;box-shadow:0 5px 22px #0002}
+.native-note{font-size:11px;line-height:16px;color:#777;margin:6px 12px 0;padding:5px 9px;background:#ffffffe6;border-radius:12px}
+.native-groups{display:flex;flex-direction:column;gap:8px}
+/* Stop is the original control, deliberately disabled until the existing host exposes a real stop operation. */
+button[data-native-stop-unavailable]{cursor:not-allowed!important;opacity:.48!important}

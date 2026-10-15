@@ -1,0 +1,23 @@
+{
+  "source": "user-created my-cat artwork",
+  "sourceSha256": "f90996547537458287819105a9a90e775d89e565ec740e50b7dc617ee4796904",
+  "size": [
+    1536,
+    2288
+  ],
+  "cellSize": [
+    192,
+    208
+  ],
+  "blinkDurationsMs": [
+    4000,
+    65,
+    85,
+    75,
+    575
+  ],
+  "lookPosesPixelExactToApprovedPreview": true,
+  "allBasePixelsExact": true,
+  "newImagesGenerated": 0,
+  "installedFilesWritten": false
+}

@@ -1,0 +1,2 @@
+c596b721f6b113054ec1bd5ea051d2e2a03ad3cb7f27fd4cced1fae62b9b1f3b  GrassFish-Setup-0.1.8.1-win-x64.exe
+66bf44ad71a2122ddc85c9aa0157c8c58579e6e8bf3c1edc31da168813531182  GrassFish-0.1.8.1-win-x64-portable.zip

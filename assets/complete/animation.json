@@ -1,0 +1,333 @@
+{
+  "SchemaVersion": 1,
+  "Width": 272,
+  "Height": 272,
+  "OriginX": -24,
+  "OriginY": -12,
+  "Entry": [
+    {
+      "File": "enter-000.png",
+      "DurationMs": 83,
+      "SourceFrame": 1
+    },
+    {
+      "File": "enter-001.png",
+      "DurationMs": 84,
+      "SourceFrame": 3
+    },
+    {
+      "File": "enter-002.png",
+      "DurationMs": 83,
+      "SourceFrame": 5
+    },
+    {
+      "File": "enter-003.png",
+      "DurationMs": 83,
+      "SourceFrame": 7
+    },
+    {
+      "File": "enter-004.png",
+      "DurationMs": 84,
+      "SourceFrame": 9
+    },
+    {
+      "File": "enter-005.png",
+      "DurationMs": 83,
+      "SourceFrame": 11
+    },
+    {
+      "File": "enter-006.png",
+      "DurationMs": 83,
+      "SourceFrame": 13
+    },
+    {
+      "File": "enter-007.png",
+      "DurationMs": 84,
+      "SourceFrame": 15
+    },
+    {
+      "File": "enter-008.png",
+      "DurationMs": 83,
+      "SourceFrame": 17
+    },
+    {
+      "File": "enter-009.png",
+      "DurationMs": 83,
+      "SourceFrame": 19
+    },
+    {
+      "File": "enter-010.png",
+      "DurationMs": 84,
+      "SourceFrame": 21
+    },
+    {
+      "File": "enter-011.png",
+      "DurationMs": 83,
+      "SourceFrame": 23
+    },
+    {
+      "File": "enter-012.png",
+      "DurationMs": 83,
+      "SourceFrame": 25
+    },
+    {
+      "File": "enter-013.png",
+      "DurationMs": 84,
+      "SourceFrame": 27
+    },
+    {
+      "File": "enter-014.png",
+      "DurationMs": 83,
+      "SourceFrame": 29
+    },
+    {
+      "File": "enter-015.png",
+      "DurationMs": 83,
+      "SourceFrame": 31
+    },
+    {
+      "File": "enter-016.png",
+      "DurationMs": 84,
+      "SourceFrame": 33
+    },
+    {
+      "File": "enter-017.png",
+      "DurationMs": 83,
+      "SourceFrame": 35
+    },
+    {
+      "File": "enter-018.png",
+      "DurationMs": 83,
+      "SourceFrame": 37
+    },
+    {
+      "File": "enter-019.png",
+      "DurationMs": 84,
+      "SourceFrame": 39
+    },
+    {
+      "File": "enter-020.png",
+      "DurationMs": 83,
+      "SourceFrame": 41
+    },
+    {
+      "File": "enter-021.png",
+      "DurationMs": 83,
+      "SourceFrame": 43
+    },
+    {
+      "File": "enter-022.png",
+      "DurationMs": 84,
+      "SourceFrame": 45
+    },
+    {
+      "File": "enter-023.png",
+      "DurationMs": 83,
+      "SourceFrame": 47
+    },
+    {
+      "File": "enter-024.png",
+      "DurationMs": 83,
+      "SourceFrame": 49
+    },
+    {
+      "File": "enter-025.png",
+      "DurationMs": 84,
+      "SourceFrame": 51
+    },
+    {
+      "File": "enter-026.png",
+      "DurationMs": 83,
+      "SourceFrame": 53
+    },
+    {
+      "File": "enter-027.png",
+      "DurationMs": 83,
+      "SourceFrame": 55
+    },
+    {
+      "File": "enter-028.png",
+      "DurationMs": 84,
+      "SourceFrame": 57
+    },
+    {
+      "File": "enter-029.png",
+      "DurationMs": 83,
+      "SourceFrame": 59
+    },
+    {
+      "File": "enter-030.png",
+      "DurationMs": 83,
+      "SourceFrame": 61
+    },
+    {
+      "File": "enter-031.png",
+      "DurationMs": 84,
+      "SourceFrame": 63
+    },
+    {
+      "File": "enter-032.png",
+      "DurationMs": 83,
+      "SourceFrame": 65
+    },
+    {
+      "File": "enter-033.png",
+      "DurationMs": 83,
+      "SourceFrame": 67
+    },
+    {
+      "File": "enter-034.png",
+      "DurationMs": 84,
+      "SourceFrame": 69
+    },
+    {
+      "File": "enter-035.png",
+      "DurationMs": 83,
+      "SourceFrame": 71
+    },
+    {
+      "File": "enter-036.png",
+      "DurationMs": 83,
+      "SourceFrame": 73
+    }
+  ],
+  "Loop": [
+    {
+      "File": "loop-000.png",
+      "DurationMs": 84,
+      "SourceFrame": 75
+    },
+    {
+      "File": "loop-001.png",
+      "DurationMs": 83,
+      "SourceFrame": 77
+    },
+    {
+      "File": "loop-002.png",
+      "DurationMs": 83,
+      "SourceFrame": 79
+    },
+    {
+      "File": "loop-003.png",
+      "DurationMs": 84,
+      "SourceFrame": 81
+    },
+    {
+      "File": "loop-004.png",
+      "DurationMs": 83,
+      "SourceFrame": 83
+    },
+    {
+      "File": "loop-005.png",
+      "DurationMs": 83,
+      "SourceFrame": 85
+    },
+    {
+      "File": "loop-006.png",
+      "DurationMs": 84,
+      "SourceFrame": 87
+    },
+    {
+      "File": "loop-007.png",
+      "DurationMs": 83,
+      "SourceFrame": 89
+    },
+    {
+      "File": "loop-008.png",
+      "DurationMs": 83,
+      "SourceFrame": 91
+    },
+    {
+      "File": "loop-009.png",
+      "DurationMs": 84,
+      "SourceFrame": 93
+    },
+    {
+      "File": "loop-010.png",
+      "DurationMs": 83,
+      "SourceFrame": 95
+    },
+    {
+      "File": "loop-011.png",
+      "DurationMs": 83,
+      "SourceFrame": 97
+    },
+    {
+      "File": "loop-012.png",
+      "DurationMs": 84,
+      "SourceFrame": 99
+    },
+    {
+      "File": "loop-013.png",
+      "DurationMs": 83,
+      "SourceFrame": 101
+    },
+    {
+      "File": "loop-014.png",
+      "DurationMs": 83,
+      "SourceFrame": 103
+    },
+    {
+      "File": "loop-015.png",
+      "DurationMs": 84,
+      "SourceFrame": 105
+    },
+    {
+      "File": "loop-016.png",
+      "DurationMs": 83,
+      "SourceFrame": 107
+    },
+    {
+      "File": "loop-017.png",
+      "DurationMs": 83,
+      "SourceFrame": 109
+    },
+    {
+      "File": "loop-018.png",
+      "DurationMs": 84,
+      "SourceFrame": 111
+    },
+    {
+      "File": "loop-019.png",
+      "DurationMs": 83,
+      "SourceFrame": 113
+    },
+    {
+      "File": "loop-020.png",
+      "DurationMs": 83,
+      "SourceFrame": 115
+    },
+    {
+      "File": "loop-021.png",
+      "DurationMs": 84,
+      "SourceFrame": 117
+    },
+    {
+      "File": "loop-022.png",
+      "DurationMs": 83,
+      "SourceFrame": 119
+    }
+  ],
+  "HandoffWorkIndex": 26,
+  "SourceSha256": "f3c1db8494f94295d05a88c94e8870cb9fb5ebd5fabf1839686bbf7dabf08e67",
+  "SourceFps": 24,
+  "SourceFrames": 124,
+  "EntryOnce": true,
+  "LoopRange": [
+    75,
+    121
+  ],
+  "Registration": {
+    "Scale": 0.3541666666666667,
+    "Offset": [
+      0,
+      0
+    ],
+    "PerFrameFitting": false,
+    "SquarePaddingPreserved": true
+  },
+  "NewImagesGenerated": 0,
+  "InitialColorBridgeMs": 250,
+  "Decoder": "FFmpeg",
+  "LoopForwardOnly": true
+}

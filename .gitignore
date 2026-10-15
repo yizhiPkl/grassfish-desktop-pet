@@ -1,0 +1,46 @@
+# Build products and local-only records
+/release/
+/dist/
+/audit-results/
+**/bin/
+**/obj/
+**/qa-profile/
+**/native-qa-profile/
+**/webview-profile/
+**/components-cache/
+**/codex-components/
+**/native-task-webview/
+/.vs/
+*.log
+*.user
+*.suo
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Never upload Codex's own application bundle or a personal pairing
+/assets/native-task-ui/vendor/
+codex-connection.json
+session_index.jsonl
+*.jsonl
+auth.json
+settings.json
+settings.json.bak
+task-health.json
+
+# Secrets, credentials and signing material
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+*.keystore
+*.mobileprovision
+id_rsa*
+id_ed25519*
+
+# downloads/ contains reviewed distributable releases on purpose.

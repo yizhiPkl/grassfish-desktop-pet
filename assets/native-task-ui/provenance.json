@@ -1,0 +1,504 @@
+{
+  "sourcePackage": "OpenAI.Codex_26.1007.9446.0_x64",
+  "sourceAsarSha256": "356c13dc715816436fa1cf31e9f77863f62ea7b7cacc465b397313246eb29325",
+  "scope": "local per-user compatibility adapter; not a public SDK or independent official product",
+  "originalImplementationUnchanged": true,
+  "files": [
+    {
+      "file": "avatar-overlay-native-page-d4760f1b9cf9.js",
+      "upstreamSha256": "860341a96cb8a938cb6d9eef858036dd564979b9254361839acdced9ddad298e",
+      "sha256": "7e7952015a7c473887d1e03baaf1169eedd118224b3f347e10400eb394f131c9",
+      "change": "append exports only"
+    },
+    {
+      "file": "realtime-voice-handoff-target-d6bf2d2f2a62.js",
+      "upstreamSha256": "a1958663204a6c554eab6197e32c70179647c08c275ece93a4af30cc0c4f454c",
+      "sha256": "a1958663204a6c554eab6197e32c70179647c08c275ece93a4af30cc0c4f454c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "app-initial-102e45562729.js",
+      "upstreamSha256": "c59b2a0be6c13496b30ebda167925cdccab26799cae350c62d2b37afe3589b57",
+      "sha256": "c59b2a0be6c13496b30ebda167925cdccab26799cae350c62d2b37afe3589b57",
+      "change": "byte-identical"
+    },
+    {
+      "file": "app-shared-30671c57ec82.js",
+      "upstreamSha256": "392b023063a3569a2efc47a019accb2d1e72295b1bfec2cbb81fc37e1515580a",
+      "sha256": "bb6326c49e20292a9927a2245c670b0742fbb43afa4f1dde30b900845df743bb",
+      "change": "append exports only"
+    },
+    {
+      "file": "rolldown-runtime-2d059c5e81f4.js",
+      "upstreamSha256": "e0a79ad36c6ca1ffbc796c80aa5661803a9d1bc684e29d1587f48b4ba9a82714",
+      "sha256": "e0a79ad36c6ca1ffbc796c80aa5661803a9d1bc684e29d1587f48b4ba9a82714",
+      "change": "byte-identical"
+    },
+    {
+      "file": "sound-on-10f80e9e5aee.js",
+      "upstreamSha256": "ad7cee153457e1b56e85f3b86b8cb521fc0bbf5c69ac0107de03d449e534d088",
+      "sha256": "ad7cee153457e1b56e85f3b86b8cb521fc0bbf5c69ac0107de03d449e534d088",
+      "change": "byte-identical"
+    },
+    {
+      "file": "avatar-overlay-debug-state-7ad2f7aa5412.js",
+      "upstreamSha256": "33809cae78b49bd38d1240285baf5836a90bf262f9f5098ab6d326264c4c0c55",
+      "sha256": "33809cae78b49bd38d1240285baf5836a90bf262f9f5098ab6d326264c4c0c55",
+      "change": "byte-identical"
+    },
+    {
+      "file": "permission-request-model-5651a96c7a72.js",
+      "upstreamSha256": "ce59718c239656f34b2731f8cc2e2e4fe1495d7502c399a10f8bf1e1603caf50",
+      "sha256": "ce59718c239656f34b2731f8cc2e2e4fe1495d7502c399a10f8bf1e1603caf50",
+      "change": "byte-identical"
+    },
+    {
+      "file": "active-tool-activity-label-ace29b0ea165.js",
+      "upstreamSha256": "98e7c6f5ae6ec8b6223cdbe5abd2c5b9aa43a905c46f54382d25a0abc45e8c7e",
+      "sha256": "98e7c6f5ae6ec8b6223cdbe5abd2c5b9aa43a905c46f54382d25a0abc45e8c7e",
+      "change": "byte-identical"
+    },
+    {
+      "file": "skill-exploration-labels-34133f916d5b.js",
+      "upstreamSha256": "fac2bee5506a511bdb58206aca54c38a6e25ea4a32ac639dad7368e081412edc",
+      "sha256": "fac2bee5506a511bdb58206aca54c38a6e25ea4a32ac639dad7368e081412edc",
+      "change": "byte-identical"
+    },
+    {
+      "file": "use-realtime-voice-native-overlay-transition-enabled-47591ff089fe.js",
+      "upstreamSha256": "49fc537b28b2b4062144879fc10f7a0c84d3c94287af5b2b8fb51030c1228201",
+      "sha256": "49fc537b28b2b4062144879fc10f7a0c84d3c94287af5b2b8fb51030c1228201",
+      "change": "byte-identical"
+    },
+    {
+      "file": "realtime-voice-codex-status-signal-7ee220db8b8a.js",
+      "upstreamSha256": "290dd911bdbe78aa9616bdaf6af8c3c5d2161a013162bbeca1a4a65d38823569",
+      "sha256": "290dd911bdbe78aa9616bdaf6af8c3c5d2161a013162bbeca1a4a65d38823569",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mcp-tool-activity-label-6af90dd50c6c.js",
+      "upstreamSha256": "ed89f2bd15c6cc726d20728fe0eef9a84548c31ec666e2852484063e3f461d51",
+      "sha256": "ed89f2bd15c6cc726d20728fe0eef9a84548c31ec666e2852484063e3f461d51",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mini-orbit-artwork-27ef4f4560c0.js",
+      "upstreamSha256": "914f4cde4ff6d6460f8896f542fdaf566d4ed749cdefd6c8851564082f22e224",
+      "sha256": "914f4cde4ff6d6460f8896f542fdaf566d4ed749cdefd6c8851564082f22e224",
+      "change": "byte-identical"
+    },
+    {
+      "file": "avatar-mascot-button-11223c6d3a1d.js",
+      "upstreamSha256": "12a13ea657debfd1ecec1cca25402cc8a5cc07f82bdd2ca34a5956e153c3d4ca",
+      "sha256": "12a13ea657debfd1ecec1cca25402cc8a5cc07f82bdd2ca34a5956e153c3d4ca",
+      "change": "byte-identical"
+    },
+    {
+      "file": "read-interaction-event-f939001e491d.js",
+      "upstreamSha256": "0e0cd3de37d9c81275759f900ca0d1799f337f3af82db5e91d835ff6360cf4e6",
+      "sha256": "0e0cd3de37d9c81275759f900ca0d1799f337f3af82db5e91d835ff6360cf4e6",
+      "change": "byte-identical"
+    },
+    {
+      "file": "composer-controls-444875b50f4b.js",
+      "upstreamSha256": "0f43eee1bef8aff9889332c7643e045e68a1db8603be3318eef9941d341ba746",
+      "sha256": "0f43eee1bef8aff9889332c7643e045e68a1db8603be3318eef9941d341ba746",
+      "change": "byte-identical"
+    },
+    {
+      "file": "messages-fedf28eaafb7.js",
+      "upstreamSha256": "75982db1c30e51ab9a8c9b90b30a4acdc84e194c4162ba436329f3e42aea4d18",
+      "sha256": "75982db1c30e51ab9a8c9b90b30a4acdc84e194c4162ba436329f3e42aea4d18",
+      "change": "byte-identical"
+    },
+    {
+      "file": "use-conversation-search-highlights-49df43368b0d.js",
+      "upstreamSha256": "128b515ac31402ba130835494807da376354a880260791978e74185ac893bf10",
+      "sha256": "128b515ac31402ba130835494807da376354a880260791978e74185ac893bf10",
+      "change": "byte-identical"
+    },
+    {
+      "file": "scroll-to-match-45d3f1f290c9.js",
+      "upstreamSha256": "fc00905d29a974f148f53d2a6a48919fd545a271558e3499b8f32872ba8dd17c",
+      "sha256": "fc00905d29a974f148f53d2a6a48919fd545a271558e3499b8f32872ba8dd17c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "highlight-selectors-87362a75a50c.js",
+      "upstreamSha256": "f69dabb0a63ec2a19ba622ea8526eca482619127080bc05b980ea6ae22a0e0ee",
+      "sha256": "f69dabb0a63ec2a19ba622ea8526eca482619127080bc05b980ea6ae22a0e0ee",
+      "change": "byte-identical"
+    },
+    {
+      "file": "picker-3fe1b5a3abf8.js",
+      "upstreamSha256": "6c8265b9116e27af1fa41f40079a0a49cc5d4bca46204b88c501ad501cfcd8b3",
+      "sha256": "6c8265b9116e27af1fa41f40079a0a49cc5d4bca46204b88c501ad501cfcd8b3",
+      "change": "byte-identical"
+    },
+    {
+      "file": "native-room-180e40d647ee.js",
+      "upstreamSha256": "6f931b11a5817eddd7887cf6763dd27c40540c9e9ae22bddd18d521058f89b0a",
+      "sha256": "6f931b11a5817eddd7887cf6763dd27c40540c9e9ae22bddd18d521058f89b0a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "aeon-message-parts-51de5869eb89.js",
+      "upstreamSha256": "e7f52c4ba7724ea4d0b1469b74cb0a7a751e13776078ccfc1bf9e9fec88f9e2e",
+      "sha256": "e7f52c4ba7724ea4d0b1469b74cb0a7a751e13776078ccfc1bf9e9fec88f9e2e",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-directive-renderer-55b6368bd6dc.js",
+      "upstreamSha256": "fc82c148c2f933a6983803b2d6ab9fb7aef4261caa56a628ba87cb8ab4bcf5a0",
+      "sha256": "fc82c148c2f933a6983803b2d6ab9fb7aef4261caa56a628ba87cb8ab4bcf5a0",
+      "change": "byte-identical"
+    },
+    {
+      "file": "editable-writing-block-a99675fb23ae.js",
+      "upstreamSha256": "6657f31ba98b0ed7decfdb6d6c08f367954b19451f2853300ae797bc002b034a",
+      "sha256": "6657f31ba98b0ed7decfdb6d6c08f367954b19451f2853300ae797bc002b034a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "inline-80477a4cf1c9.js",
+      "upstreamSha256": "c9d3afff89c10df8f3278d5082b0db6842da7e255a56cc0e031b14d1c5e29e9f",
+      "sha256": "c9d3afff89c10df8f3278d5082b0db6842da7e255a56cc0e031b14d1c5e29e9f",
+      "change": "byte-identical"
+    },
+    {
+      "file": "browser-533a4aaa211f.js",
+      "upstreamSha256": "58c8c5e4cdb3f99507d85dba3c642bb76e821402faf1da233189a09bb0990365",
+      "sha256": "58c8c5e4cdb3f99507d85dba3c642bb76e821402faf1da233189a09bb0990365",
+      "change": "byte-identical"
+    },
+    {
+      "file": "color-palette-5560cee20c10.js",
+      "upstreamSha256": "5edc51e05f8b6f90d2efb9d80b4e702b93b86573636edf094b9f39174eee707b",
+      "sha256": "5edc51e05f8b6f90d2efb9d80b4e702b93b86573636edf094b9f39174eee707b",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-copy-button-26018651caaf.js",
+      "upstreamSha256": "396f587d8d8644f4f6a4eb254f67fd38ecccb392b6dbd8e69cdf9c18365e66ee",
+      "sha256": "396f587d8d8644f4f6a4eb254f67fd38ecccb392b6dbd8e69cdf9c18365e66ee",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-surface-1584ad7b307c.js",
+      "upstreamSha256": "1df3c25cc7e2ed34c8072b49313dc49fcdeb68c4bc16c2d37ba115863b58f016",
+      "sha256": "1df3c25cc7e2ed34c8072b49313dc49fcdeb68c4bc16c2d37ba115863b58f016",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-theme-61c0ed2a12ed.js",
+      "upstreamSha256": "7751f0a56de4c30882c988f79ceae447c1fb1820f4984b199a4ee33cd534857a",
+      "sha256": "7751f0a56de4c30882c988f79ceae447c1fb1820f4984b199a4ee33cd534857a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-editor-b38833d25a57.js",
+      "upstreamSha256": "29ef8abc267a7ea59c93a7ef71cb3235d43164701ccf4338316c9ab9b897c055",
+      "sha256": "29ef8abc267a7ea59c93a7ef71cb3235d43164701ccf4338316c9ab9b897c055",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-editor-styles-90146127a9c9.js",
+      "upstreamSha256": "c8bca868c388f7692542c204f7eebfedb989d4254d31661f7db031b2a1c6d3a2",
+      "sha256": "c8bca868c388f7692542c204f7eebfedb989d4254d31661f7db031b2a1c6d3a2",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-floating-slash-menu-67f7c51fa745.js",
+      "upstreamSha256": "751a8abc49b5b0c42605333d7016fe45fa478ed1d41a09aefab2d9e98350976c",
+      "sha256": "751a8abc49b5b0c42605333d7016fe45fa478ed1d41a09aefab2d9e98350976c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "types-b46e00871847.js",
+      "upstreamSha256": "5c82f822a73d467cd35939cd228a23e0206bfb38700f36768ac1199b02cae86a",
+      "sha256": "5c82f822a73d467cd35939cd228a23e0206bfb38700f36768ac1199b02cae86a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "writing-block-markdown-editor-6d1de4a1cfb0.js",
+      "upstreamSha256": "74e003c4776256bf2a4c2115cd0c666048ab583aa1748cc7e7ab18ad4b6f5758",
+      "sha256": "74e003c4776256bf2a4c2115cd0c666048ab583aa1748cc7e7ab18ad4b6f5758",
+      "change": "byte-identical"
+    },
+    {
+      "file": "menu-items-f2b84311fe11.js",
+      "upstreamSha256": "bd0af368634272be86225adf30665c1f8bcba6aaa9d075bee76acf4751db0b55",
+      "sha256": "bd0af368634272be86225adf30665c1f8bcba6aaa9d075bee76acf4751db0b55",
+      "change": "byte-identical"
+    },
+    {
+      "file": "query-4bb85956a374.js",
+      "upstreamSha256": "8890afd39b83d89c2f0fcf3efc85da50286fb7734fc0e937c59e8f96de58b72c",
+      "sha256": "8890afd39b83d89c2f0fcf3efc85da50286fb7734fc0e937c59e8f96de58b72c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "library-file-metadata-21aba2e485af.js",
+      "upstreamSha256": "27abf22ed6fa88d31412062adec6e9ca8fd9aa839c49616461350ec84c129dea",
+      "sha256": "27abf22ed6fa88d31412062adec6e9ca8fd9aa839c49616461350ec84c129dea",
+      "change": "byte-identical"
+    },
+    {
+      "file": "panel-state-27a0123e8629.js",
+      "upstreamSha256": "cf1aac41a82886de5a739d700f1842c6b8d714920c5daf12c31fb8b007ecae43",
+      "sha256": "cf1aac41a82886de5a739d700f1842c6b8d714920c5daf12c31fb8b007ecae43",
+      "change": "byte-identical"
+    },
+    {
+      "file": "content-reference-markers-d7f7ef8589cf.js",
+      "upstreamSha256": "c032773aded4e7162b6079e00f97d8d55b82ef4ca232eccad8a1a5b2ad800aab",
+      "sha256": "c032773aded4e7162b6079e00f97d8d55b82ef4ca232eccad8a1a5b2ad800aab",
+      "change": "byte-identical"
+    },
+    {
+      "file": "handoff-target-dc9aab70bf4d.js",
+      "upstreamSha256": "ad7b478585c4658bdf0891b834f8f9a23713e451f60d65dac2e800b2f543cc8d",
+      "sha256": "ad7b478585c4658bdf0891b834f8f9a23713e451f60d65dac2e800b2f543cc8d",
+      "change": "byte-identical"
+    },
+    {
+      "file": "handoff-2d4942b5aa0b.js",
+      "upstreamSha256": "60f69594d51838e22e01dfdedc0fe46fcd2a8ffb2f1163526455204f3c33c930",
+      "sha256": "60f69594d51838e22e01dfdedc0fe46fcd2a8ffb2f1163526455204f3c33c930",
+      "change": "byte-identical"
+    },
+    {
+      "file": "open-file-28331bf56dc4.js",
+      "upstreamSha256": "d6a9f706886a53bb08e5d27483eb18279e40f4265322f7c3ebb237e34e712166",
+      "sha256": "d6a9f706886a53bb08e5d27483eb18279e40f4265322f7c3ebb237e34e712166",
+      "change": "byte-identical"
+    },
+    {
+      "file": "card-a1b0a7027d9e.js",
+      "upstreamSha256": "739100ca25a6f136650bebda21355e0154b1ad2241aad844bed1869f400e782d",
+      "sha256": "739100ca25a6f136650bebda21355e0154b1ad2241aad844bed1869f400e782d",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mcp-request-card-5fd479d0d010.js",
+      "upstreamSha256": "381c7e82ca0f13039166b6e960d4dc2806d8e8f1e5fbb4df07b8572b6f0180ec",
+      "sha256": "381c7e82ca0f13039166b6e960d4dc2806d8e8f1e5fbb4df07b8572b6f0180ec",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mcp-identifier-5dc2bdcd4d66.js",
+      "upstreamSha256": "11acb02a37d437020cd476f8233435d0da6b05eef5ff11f37a63a74ea0c5f4df",
+      "sha256": "11acb02a37d437020cd476f8233435d0da6b05eef5ff11f37a63a74ea0c5f4df",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mcp-plugin-logo-5bbcfcb03261.js",
+      "upstreamSha256": "9bd6126c75bb7072d1908d9c7dda9a43bdfc16cfec1abb29c313db3d0d39f042",
+      "sha256": "9bd6126c75bb7072d1908d9c7dda9a43bdfc16cfec1abb29c313db3d0d39f042",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mobile-handoff-100fb49be525.js",
+      "upstreamSha256": "33e737368ff6cfc42976b75c444ab843ae3f309d115f8df863b6a5c25295fcd9",
+      "sha256": "33e737368ff6cfc42976b75c444ab843ae3f309d115f8df863b6a5c25295fcd9",
+      "change": "byte-identical"
+    },
+    {
+      "file": "request-action-chip-62550c48d5d5.js",
+      "upstreamSha256": "db2d162acf38db49fb905f29267c45f1ac2e58ec312a83995638f453441759b8",
+      "sha256": "db2d162acf38db49fb905f29267c45f1ac2e58ec312a83995638f453441759b8",
+      "change": "byte-identical"
+    },
+    {
+      "file": "color-icon-6d1f6264dbf2.js",
+      "upstreamSha256": "889649ad7896598b5627d1da34ef883568c1c023894af129d61216393b4d845b",
+      "sha256": "889649ad7896598b5627d1da34ef883568c1c023894af129d61216393b4d845b",
+      "change": "byte-identical"
+    },
+    {
+      "file": "text-bubble-figure-light-c974e4c8b638.js",
+      "upstreamSha256": "df753f7e4ee48e6ed6bb0f36f41b1824226917cb4ec654ce1b772c011b55cd77",
+      "sha256": "df753f7e4ee48e6ed6bb0f36f41b1824226917cb4ec654ce1b772c011b55cd77",
+      "change": "byte-identical"
+    },
+    {
+      "file": "request-panel-d84363009dea.js",
+      "upstreamSha256": "dbb96b606e7ed1706152e1e58094adce8b09400cb2d0d9b274066cd5ce3c9e5e",
+      "sha256": "dbb96b606e7ed1706152e1e58094adce8b09400cb2d0d9b274066cd5ce3c9e5e",
+      "change": "byte-identical"
+    },
+    {
+      "file": "option-carousel-5af5b22bae0a.js",
+      "upstreamSha256": "459aabe6e243e9b5e331246bd61317d7b2571bdec1ab7965a8697c671c05a628",
+      "sha256": "459aabe6e243e9b5e331246bd61317d7b2571bdec1ab7965a8697c671c05a628",
+      "change": "byte-identical"
+    },
+    {
+      "file": "card-carousel-scroll-60e5f34c1aff.js",
+      "upstreamSha256": "00d9eebaceab44bda1330b6f2362ff6890f785cd5d7bf02000ad3bdf70fa9e2c",
+      "sha256": "00d9eebaceab44bda1330b6f2362ff6890f785cd5d7bf02000ad3bdf70fa9e2c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "option-card-6c2806d599b5.js",
+      "upstreamSha256": "6591ecac059d9d1c62e3c4fbce267a9563bda3424d62d76a4370e17f46694e88",
+      "sha256": "6591ecac059d9d1c62e3c4fbce267a9563bda3424d62d76a4370e17f46694e88",
+      "change": "byte-identical"
+    },
+    {
+      "file": "boundary-93bec7a645ab.js",
+      "upstreamSha256": "3912459c07361039687eca103b5e716f1fce8d9ad2311dd992e88376438ca452",
+      "sha256": "3912459c07361039687eca103b5e716f1fce8d9ad2311dd992e88376438ca452",
+      "change": "byte-identical"
+    },
+    {
+      "file": "PlatformUIKitProvider-a50095b38ea9.js",
+      "upstreamSha256": "3d4e652bf1b478129992924dd604e6c7c09fb19eca5ced10902cc3b501e6c29a",
+      "sha256": "3d4e652bf1b478129992924dd604e6c7c09fb19eca5ced10902cc3b501e6c29a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "PlatformUIKitContext-d87474d4a83a.js",
+      "upstreamSha256": "c4b8357710faf3e2de2139bba06e46aa3e75b32f9016be973e51daf06869ecc7",
+      "sha256": "c4b8357710faf3e2de2139bba06e46aa3e75b32f9016be973e51daf06869ecc7",
+      "change": "byte-identical"
+    },
+    {
+      "file": "status-a580a1a33eec.js",
+      "upstreamSha256": "133065c26985eb10ed1f6e92c93f27aa55bfb6de03ebe4e26a6d061ebeeada04",
+      "sha256": "133065c26985eb10ed1f6e92c93f27aa55bfb6de03ebe4e26a6d061ebeeada04",
+      "change": "byte-identical"
+    },
+    {
+      "file": "browser-auth-header-d85a199dbb47.js",
+      "upstreamSha256": "9dedfe6125b8650bc04d71e08bf32c6840af233747bcafc6ec5518bccbd4499a",
+      "sha256": "9dedfe6125b8650bc04d71e08bf32c6840af233747bcafc6ec5518bccbd4499a",
+      "change": "byte-identical"
+    },
+    {
+      "file": "microsoft-oauth-bundle-293e3bce57f3.js",
+      "upstreamSha256": "fbb32cfe6bbda8686c74d723d9749d075acb3cfa525a445915348693dca75dcc",
+      "sha256": "fbb32cfe6bbda8686c74d723d9749d075acb3cfa525a445915348693dca75dcc",
+      "change": "byte-identical"
+    },
+    {
+      "file": "prewarm-runtime-c7b2f377c344.js",
+      "upstreamSha256": "ba27915775773248ab826e9776e72a8160548576dd8e617d42bebcb7d688eb7d",
+      "sha256": "ba27915775773248ab826e9776e72a8160548576dd8e617d42bebcb7d688eb7d",
+      "change": "byte-identical"
+    },
+    {
+      "file": "state-b6daf609cb2f.js",
+      "upstreamSha256": "c09c2525f004664ab527220267833c4c95cedf1abf6b857b60d749f9602b48ad",
+      "sha256": "c09c2525f004664ab527220267833c4c95cedf1abf6b857b60d749f9602b48ad",
+      "change": "byte-identical"
+    },
+    {
+      "file": "creation-placeholder-10645bdc47a7.js",
+      "upstreamSha256": "17d0d28b639154452b4ea64ab53f2b3cbfcec24be242a4a02cfe5e4eedc7afd7",
+      "sha256": "17d0d28b639154452b4ea64ab53f2b3cbfcec24be242a4a02cfe5e4eedc7afd7",
+      "change": "byte-identical"
+    },
+    {
+      "file": "aeon-appearance-colors-4824e34c007c.js",
+      "upstreamSha256": "1e061fe3c13d27bc2c53d0a71424ca81a4a58bfb2603f4bf298e9c7dae328e31",
+      "sha256": "1e061fe3c13d27bc2c53d0a71424ca81a4a58bfb2603f4bf298e9c7dae328e31",
+      "change": "byte-identical"
+    },
+    {
+      "file": "card-da7ab8553d8e.js",
+      "upstreamSha256": "abf907dcd87dc94a700b62d900730414b057d796d965676608ce5c070b1af97c",
+      "sha256": "abf907dcd87dc94a700b62d900730414b057d796d965676608ce5c070b1af97c",
+      "change": "byte-identical"
+    },
+    {
+      "file": "dot-onboarding-handoff-state-fa7043751661.js",
+      "upstreamSha256": "9cf873dddb8e250d9bf32629a7d14335e6f82d6e2f15957854c88350625fdfa8",
+      "sha256": "9cf873dddb8e250d9bf32629a7d14335e6f82d6e2f15957854c88350625fdfa8",
+      "change": "byte-identical"
+    },
+    {
+      "file": "context-menu-1b28a015f1d3.js",
+      "upstreamSha256": "455e635f08e3f598e101a77f65b84e1727517d0cd3d02824000966d1facdddcd",
+      "sha256": "455e635f08e3f598e101a77f65b84e1727517d0cd3d02824000966d1facdddcd",
+      "change": "byte-identical"
+    },
+    {
+      "file": "copy-generated-image-to-clipboard-305e2623bc8e.js",
+      "upstreamSha256": "dded25405ee20a70484930de21b29b796f4f83bcdf24de85695fce576cf5a3b0",
+      "sha256": "dded25405ee20a70484930de21b29b796f4f83bcdf24de85695fce576cf5a3b0",
+      "change": "byte-identical"
+    },
+    {
+      "file": "transcript-state-f0d5f1a64892.js",
+      "upstreamSha256": "dfee5915ab4e098983fde782737b482609854425bf6fd2b4175d6b75bb6daa58",
+      "sha256": "dfee5915ab4e098983fde782737b482609854425bf6fd2b4175d6b75bb6daa58",
+      "change": "byte-identical"
+    },
+    {
+      "file": "emoji-regex-xs-ae6eb0becbe3.js",
+      "upstreamSha256": "9b9101733f8829d617f2410986576ff32c249612c4e69cfa31f1364615360104",
+      "sha256": "9b9101733f8829d617f2410986576ff32c249612c4e69cfa31f1364615360104",
+      "change": "byte-identical"
+    },
+    {
+      "file": "mcp-app-host-styles-ccf02996538c.js",
+      "upstreamSha256": "21876c19b7c47466d37d563069a8d0623990d4554d93c37055a2c572b2f05b34",
+      "sha256": "21876c19b7c47466d37d563069a8d0623990d4554d93c37055a2c572b2f05b34",
+      "change": "byte-identical"
+    },
+    {
+      "file": "controls-89171a3a892f.js",
+      "upstreamSha256": "88034e6c69a88303a1edd8e0de61bfd7272a5240bf02d4ca6421183667c30372",
+      "sha256": "88034e6c69a88303a1edd8e0de61bfd7272a5240bf02d4ca6421183667c30372",
+      "change": "byte-identical"
+    },
+    {
+      "file": "observed-message-performance-marker-fc8459f04afb.js",
+      "upstreamSha256": "04d1fd6e51e56baacd297df39d640672070a974ff21c605dc3fbcf08c6be3290",
+      "sha256": "04d1fd6e51e56baacd297df39d640672070a974ff21c605dc3fbcf08c6be3290",
+      "change": "byte-identical"
+    },
+    {
+      "file": "use-floating-window-pointer-interactivity-773faa8caded.js",
+      "upstreamSha256": "5d232008f1b5667d058ccdabf0eae5ddabaaec6205ea5424e780ae3eaa2ab3f0",
+      "sha256": "5d232008f1b5667d058ccdabf0eae5ddabaaec6205ea5424e780ae3eaa2ab3f0",
+      "change": "byte-identical"
+    },
+    {
+      "file": "plan-implementation-request-0cd55f1ae7b1.js",
+      "upstreamSha256": "f61857f4ef585862810b2521bc34ec57b2e82feae99aefb80f1001211788891d",
+      "sha256": "f61857f4ef585862810b2521bc34ec57b2e82feae99aefb80f1001211788891d",
+      "change": "byte-identical"
+    },
+    {
+      "file": "bullet-separator-41b7367a3c37.js",
+      "upstreamSha256": "954e37d107aff3095430dcaa446c7c0c697cd3c6172c46bf3cc4c95c03ba5c24",
+      "sha256": "954e37d107aff3095430dcaa446c7c0c697cd3c6172c46bf3cc4c95c03ba5c24",
+      "change": "byte-identical"
+    },
+    {
+      "file": "app-initial-99e8b4b455fa.css",
+      "sha256": "1a75f9180b89d2457dc09e4efea288436c9cf6d44e5ba59b2c03d3d571b7bf61",
+      "change": "byte-identical"
+    },
+    {
+      "file": "app-shared-6ed15bfa827c.css",
+      "sha256": "8b4732f16ae0250887d3fe584652ac26fe67e1c8c576dbe364b5063b6324af33",
+      "change": "byte-identical"
+    },
+    {
+      "file": "avatar-overlay-native-page-b380d8acf007.css",
+      "sha256": "fb4a6a669e7eaf906b2f2759a2d93b895e487af512896f11ee70aae4f53d0bef",
+      "change": "byte-identical"
+    },
+    {
+      "file": "avatar-mascot-button-f35a0d712228.css",
+      "sha256": "5776830f5cc3225c3e69f2b9e11ecdab2253c34900a1cfa47a0ba158d7873d82",
+      "change": "byte-identical"
+    }
+  ],
+  "webview2Sdk": "1.0.4258.31",
+  "runtimeInstalledSeparately": true
+}

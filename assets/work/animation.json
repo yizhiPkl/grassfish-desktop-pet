@@ -1,0 +1,204 @@
+{
+  "SchemaVersion": 1,
+  "Width": 272,
+  "Height": 248,
+  "OriginX": -24,
+  "OriginY": 0,
+  "Entry": [
+    {
+      "File": "enter-000.png",
+      "DurationMs": 83,
+      "SourceFrame": 1
+    },
+    {
+      "File": "enter-001.png",
+      "DurationMs": 84,
+      "SourceFrame": 3
+    },
+    {
+      "File": "enter-002.png",
+      "DurationMs": 83,
+      "SourceFrame": 5
+    },
+    {
+      "File": "enter-003.png",
+      "DurationMs": 83,
+      "SourceFrame": 7
+    },
+    {
+      "File": "enter-004.png",
+      "DurationMs": 84,
+      "SourceFrame": 9
+    },
+    {
+      "File": "enter-005.png",
+      "DurationMs": 83,
+      "SourceFrame": 11
+    },
+    {
+      "File": "enter-006.png",
+      "DurationMs": 83,
+      "SourceFrame": 13
+    },
+    {
+      "File": "enter-007.png",
+      "DurationMs": 84,
+      "SourceFrame": 15
+    }
+  ],
+  "Loop": [
+    {
+      "File": "loop-000.png",
+      "DurationMs": 125,
+      "SourceFrame": 17
+    },
+    {
+      "File": "loop-001.png",
+      "DurationMs": 125,
+      "SourceFrame": 20
+    },
+    {
+      "File": "loop-002.png",
+      "DurationMs": 125,
+      "SourceFrame": 23
+    },
+    {
+      "File": "loop-003.png",
+      "DurationMs": 125,
+      "SourceFrame": 26
+    },
+    {
+      "File": "loop-004.png",
+      "DurationMs": 125,
+      "SourceFrame": 29
+    },
+    {
+      "File": "loop-005.png",
+      "DurationMs": 125,
+      "SourceFrame": 32
+    },
+    {
+      "File": "loop-006.png",
+      "DurationMs": 125,
+      "SourceFrame": 35
+    },
+    {
+      "File": "loop-007.png",
+      "DurationMs": 125,
+      "SourceFrame": 38
+    },
+    {
+      "File": "loop-008.png",
+      "DurationMs": 125,
+      "SourceFrame": 41
+    },
+    {
+      "File": "loop-009.png",
+      "DurationMs": 125,
+      "SourceFrame": 44
+    },
+    {
+      "File": "loop-010.png",
+      "DurationMs": 125,
+      "SourceFrame": 47
+    },
+    {
+      "File": "loop-011.png",
+      "DurationMs": 125,
+      "SourceFrame": 50
+    },
+    {
+      "File": "loop-012.png",
+      "DurationMs": 125,
+      "SourceFrame": 53
+    },
+    {
+      "File": "loop-013.png",
+      "DurationMs": 125,
+      "SourceFrame": 56
+    },
+    {
+      "File": "loop-014.png",
+      "DurationMs": 125,
+      "SourceFrame": 59
+    },
+    {
+      "File": "loop-015.png",
+      "DurationMs": 125,
+      "SourceFrame": 62
+    },
+    {
+      "File": "loop-016.png",
+      "DurationMs": 125,
+      "SourceFrame": 65
+    },
+    {
+      "File": "loop-017.png",
+      "DurationMs": 125,
+      "SourceFrame": 68
+    },
+    {
+      "File": "loop-018.png",
+      "DurationMs": 125,
+      "SourceFrame": 71
+    },
+    {
+      "File": "loop-019.png",
+      "DurationMs": 125,
+      "SourceFrame": 74
+    },
+    {
+      "File": "loop-020.png",
+      "DurationMs": 125,
+      "SourceFrame": 77
+    },
+    {
+      "File": "loop-021.png",
+      "DurationMs": 125,
+      "SourceFrame": 80
+    },
+    {
+      "File": "loop-022.png",
+      "DurationMs": 125,
+      "SourceFrame": 83
+    },
+    {
+      "File": "loop-023.png",
+      "DurationMs": 125,
+      "SourceFrame": 86
+    },
+    {
+      "File": "loop-024.png",
+      "DurationMs": 125,
+      "SourceFrame": 89
+    },
+    {
+      "File": "loop-025.png",
+      "DurationMs": 125,
+      "SourceFrame": 92
+    },
+    {
+      "File": "loop-026.png",
+      "DurationMs": 125,
+      "SourceFrame": 95
+    }
+  ],
+  "SourceSha256": "bc3a0d927842f9332f998f17093b892f4c9c8a85bc7800875f02b099965eae37",
+  "SourceFps": 24,
+  "SourceFrames": 107,
+  "NewImagesGenerated": 0,
+  "Registration": {
+    "Scale": 0.2094017094017094,
+    "Offset": [
+      -31.17094017094017,
+      -26.82905982905983
+    ],
+    "PerFrameFitting": false
+  },
+  "LoopRange": [
+    17,
+    98
+  ],
+  "EntryOnce": true,
+  "ReducedMotion": "first work-loop pose"
+}
