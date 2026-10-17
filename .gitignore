@@ -29,6 +29,10 @@ auth.json
 settings.json
 settings.json.bak
 task-health.json
+update-state.json
+update-ticket.json
+**/updates/
+*.private.xml
 
 # Secrets, credentials and signing material
 .env

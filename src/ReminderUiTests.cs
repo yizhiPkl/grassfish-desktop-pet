@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +20,8 @@ namespace DesktopKitten {
                 check(app.Qa&&app.HeadlessQa,"headless isolated profile, no desktop UI automation");
                 var menuLabels=app.Pet.ContextMenu.Items.OfType<MenuItem>().Select(item=>Convert.ToString(item.Header)).ToArray();
                 check(!menuLabels.Any(label=>label.Contains("预览")),"cat right-click menu contains no reminder/completion previews");
+                check(!app.TrayMenuLabels.Any(label=>label.Contains("预览")),"system tray menu also contains no water, meal or completion previews");
+                check(app.TrayMenuLabels.Last()=="退出桌面小猫","system tray exit command is the final menu option");
                 check(menuLabels.Contains("今日小事")&&!app.Pet.ContextMenu.StaysOpen,"right-click menu preserves normal commands with outside dismissal enabled");
                 var cfg=app.Config;cfg.Pending.Clear();cfg.ReminderHistory.Clear();cfg.Fired.Clear();cfg.CustomSchedules.Clear();cfg.WaterIntervalEnabled=false;cfg.WaterTimesEnabled=false;cfg.MealEnabled=false;cfg.QuietUntilUtc=DateTime.MinValue;cfg.QuietBypassUntilUtc=DateTime.MinValue;cfg.QuietDailyEnabled=false;cfg.MonitorCodex=false;
                 var bubble=(FrameworkElement)app.Bubble.Content;
@@ -50,6 +54,21 @@ namespace DesktopKitten {
 
                 var when=DateTime.Now.AddMinutes(20);cfg.CustomSchedules.Add(new ScheduleRule{Title="记得拿快递",Mode="once",DueLocal=when,Time=when.ToString("HH:mm")});agenda.Refresh(true);Find<TextBlock>(agenda.Root,"Notes").Text="已处理记录按7天、最多200条清理；未处理和稍后项保留到你处理。×只收起，不计完成。";Capture(agenda,Path.Combine(output,"03-今日小事与免打扰.png"),700,700);
                 var panel=app.Panel;Click(panel.Root,"Today");check(!app.Pet.IsVisible&&!app.Bubble.IsVisible&&!panel.IsVisible,"headless button wiring never shows a desktop window");
+                check(Find<TextBlock>(panel.Root,"Version").Text==AppVersion.AboutText,"about version is read from the installed assembly, not handwritten UI text");
+                panel.SelectTab(3);Capture(panel,Path.Combine(output,"07-关于草鱼与检查更新.png"),760,700);
+                Click(panel.Root,"CheckUpdate");check(app.Updates.Status.Contains("隔离测试"),"about update button is wired but isolated UI tests cannot contact GitHub");
+                Find<CheckBox>(panel.Root,"AutoUpdates").IsChecked=false;check(!app.Updates.Automatic,"automatic update checks can be disabled through the real checkbox");
+                panel.Reload();check(!panel.HasUnsavedLocalEdits,"saved control panel does not falsely block update");Find<TextBox>(panel.Root,"Minutes").Text="47";
+                check(panel.HasUnsavedLocalEdits,"real control panel unsaved edit is detected for updater");panel.Reload();
+                using(var rsa=new RSACryptoServiceProvider(2048)){rsa.PersistKeyInCsp=false;var feed=new FixtureUpdateFeed{Payload=new byte[4096]};feed.Offer=UpdateTests.FixtureOffer(rsa,feed.Payload);
+                    using(var updates=new UpdateManager(Path.Combine(output,"update-ui-fixture"),true,a=>a(),feed)){
+                        updates.Check(true).GetAwaiter().GetResult();int requests=0;var update=new UpdateWindow(updates,()=>{requests++;return Task.FromResult(true);},app.Art.Portrait);
+                        check(Find<TextBlock>(update.Root,"VersionLine").Text.Contains(AppVersion.Text)&&Find<TextBlock>(update.Root,"ReleaseNotes").Text.Contains("保留日程"),"update dialog renders installed version and plain-text release notes");
+                        Capture(update,Path.Combine(output,"08-草鱼的小更新.png"),460,560);Click(update.Root,"Apply");check(requests==1&&feed.Downloads==0,"update button invokes supplied action, fixture never installs");
+                        update.Preparing=true;check(!Find<Button>(update.Root,"Apply").IsEnabled&&!Find<Button>(update.Root,"Later").IsEnabled,"preparation prevents duplicate install and premature close");update.Preparing=false;
+                        Click(update.Root,"Skip");check(new UpdatePreferencesStore(Path.Combine(output,"update-ui-fixture")).Value.SkippedVersion==feed.Offer.Manifest.version,"actual skip button saves only selected version");
+                    }
+                }
                 panel.OpenScheduleEditor(null);check(Find<ComboBox>(panel.Root,"ScheduleMode").SelectedIndex==2,"temporary small thing uses existing one-shot editor");
                 Find<TextBox>(panel.Root,"ScheduleTitle").Text="重要约定测试";Find<CheckBox>(panel.Root,"ScheduleImportant").IsChecked=true;Click(panel.Root,"SaveSchedule");check(cfg.CustomSchedules.Any(r=>r.Title=="重要约定测试"&&r.AllowDuringQuiet&&r.Mode=="once"),"important and one-shot fields save through actual editor button");
                 panel.SelectTab(0);Capture(panel,Path.Combine(output,"04-控制面板入口.png"),760,700);

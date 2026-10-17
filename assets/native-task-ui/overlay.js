@@ -1,6 +1,7 @@
-import * as original from './vendor/avatar-overlay-native-page-d4760f1b9cf9.js';
-import * as shared from './vendor/app-shared-30671c57ec82.js';
-import * as mascot from './vendor/avatar-mascot-button-11223c6d3a1d.js';
+// The host binds these stable names to a locally verified official profile.
+// No installed Codex version or hashed upstream filename leaks into this shell.
+import * as original from './compat.js';
+const shared=original,mascot={n:original.OfficialBadge,r:original.InitBadge};
 const boot=window.__grassFishBoot;
 if(!boot?.nonce||!window.chrome?.webview)throw Error('The native task view requires its bounded desktop host.');
 shared.InitIntl();shared.InitScope();shared.InitPersistedAtoms();shared.SetPersistedAtoms({},()=>{});mascot.r();
@@ -72,11 +73,11 @@ function App(){
   }else if(action.type==='stop'){setNotice('当前连接没有停止接口，请在 Codex 原对话中停止。');}
  }
  const layout=snapshot.layout;if(!layout)return null;
- const badge={ariaLabel:snapshot.expanded?'收起任务':snapshot.connected?'显示任务，共 '+notifications.length+' 个':'Codex 连接暂不可用',backgroundColor:'var(--color-background-info-soft)',foregroundColor:'var(--color-text)',content:snapshot.expanded?h(shared._T,{className:'icon-sm'+(layout.above?'':' rotate-180')}):snapshot.connected?(notifications.length||'·'):'…',isGlassy:true,isIconOnly:snapshot.expanded,onClick:()=>{send('expand',{expanded:!snapshot.expanded});if(snapshot.expanded){send('focus',{active:false});setFollow(null);}}};
+ const badge={ariaLabel:snapshot.expanded?'收起任务':snapshot.connected?'显示任务，共 '+notifications.length+' 个':'Codex 连接暂不可用',backgroundColor:'var(--color-background-info-soft)',foregroundColor:'var(--color-text)',content:snapshot.expanded?h(shared.OfficialChevron,{className:'icon-sm'+(layout.above?'':' rotate-180')}):snapshot.connected?(notifications.length||'·'):'…',isGlassy:true,isIconOnly:snapshot.expanded,onClick:()=>{send('expand',{expanded:!snapshot.expanded});if(snapshot.expanded){send('focus',{active:false});setFollow(null);}}};
  const info=!snapshot.connected?snapshot.detail:!notifications.length?'当前没有任务通知。':'仅显示当前任务及待查看通知';
  return h(R.Fragment,{},h('div',{className:'native-anchor',style:{inset:0}},h(mascot.n,{key:String(layout.badgeX)+":"+String(layout.badgeY),notificationBadge:badge,presentationPosition:{left:layout.badgeX,top:layout.badgeY,width:24,height:24},nativeCornerRadius:12})),snapshot.expanded?h('div',{className:'native-tray',style:{left:layout.trayX,top:layout.trayY,width:layout.trayWidth}},h('div',{className:'native-scroll',style:{maxHeight:layout.maxHeight}},h('div',{id:'native-content'},notifications.length?h("div",{className:"native-groups"},groups.map(group=>h(original.OfficialActivityStack,{key:group[0].id,notifications:group,notificationFollowUp:follow,activitySwipeInput:swipe,animatesActivityLayout:true,isNotificationStackCollapsed:false,isExpanded:stack,isVisiblyExpanded:stack,expandedNotificationIds:[],enteringNotificationIds:[],retainedForegroundNotificationIds:[],coveredForegroundNotificationIds:[],hiddenStartCoveredNotificationIds:[],onActivateNotification:activate,onRunNotificationControl:control,onDismissNotification:n=>{send('dismiss',{id:n.id,turnKey:n.turnKey});if(follow?.notificationId===n.id){setFollow(null);send('focus',{active:false});}},onRunNotificationAction:()=>{}}))):h('div',{className:'native-empty'},info),notice?h('div',{className:'native-note',role:'status'},notice):null))):null);
 }
-shared.OfficialReactDom().createRoot(document.getElementById('root')).render(h(Boundary,{},h(shared.OfficialIntlProvider,{locale:'zh-CN',messages,onError:()=>{}},h(shared.OfficialScopeProvider,{scope:shared.H0t,value:{}},h(App)))));
+shared.OfficialReactDom().createRoot(document.getElementById('root')).render(h(Boundary,{},h(shared.OfficialIntlProvider,{locale:'zh-CN',messages,onError:()=>{}},h(shared.OfficialScopeProvider,{scope:shared.OfficialAppScope,value:{}},h(App)))));
 new ResizeObserver(measure).observe(document.getElementById('root'));
 new MutationObserver(()=>{decorate();measure();}).observe(document.getElementById('root'),{subtree:true,childList:true});
 window.grassFish={update(value){if(api)api.update(value);else latest=value;},exportState(){api?.exportDraft();return{drafts:[...drafts].map(([id,text])=>({id,text}))};},result(value){api?.result(value);},openResult(value){api?.openResult(value);},focus(){document.querySelector('textarea')?.focus();},qa(){return{hasReply:!!document.querySelector('textarea'),disabledStops:[...document.querySelectorAll('[data-native-stop-unavailable]')].every(x=>x.disabled),rows:document.querySelectorAll('[data-avatar-overlay-hit-region="activity-pill"]').length};}};

@@ -27,11 +27,12 @@ namespace DesktopKitten {
         readonly System.Diagnostics.Stopwatch loadWatch=new System.Diagnostics.Stopwatch();
         public double LastColdLoadMilliseconds;public int WarmReopens;public string LastVisibilityReason;public bool WarmCached {get{return view!=null&&!expanded;}}
         WebView2CompositionControl view;Task releaseTask=Task.FromResult(true),initializationTask=Task.FromResult(true);int generation;
-        string nonce,lastLayout="",lastShape="",lastPayload;bool ready,closed,expanded,interactive,publishing,dirty;
+        string nonce,lastLayout="",lastShape="",lastPayload,localComponents;bool ready,closed,expanded,interactive,publishing,dirty;
         double measuredHeight=56;NativeTaskPose pose;public string Error;public int QaSendAttempts,QaOpenAttempts;public string QaOpenTarget,QaOpenError;internal string QaRealNavigationTarget;internal bool QaRealNavigationConfirmed;
         public int ViewCreations,ViewReleases,PublishCount,ShapeUpdates;public uint LastBrowserProcessId;
         public int ActivityCount {get{return ledger.Items.Count;}}
         public int DraftCount {get{return state.DraftCount;}}
+        public int PendingSendCount {get{return state.PendingCount;}}
         public bool WebViewAllocated {get{return view!=null;}}
         public uint[] CreatedBrowserPids {get{return browserPids.ToArray();}}
         public string NativeBadgeText {get{return badgeText.Text;}}
@@ -60,7 +61,7 @@ namespace DesktopKitten {
             Closed+=(s,e)=>{closed=true;warmTimer.Stop();SetInteractive(false);ReleaseView();};
         }
         bool Current(WebView2CompositionControl target,int token){return !closed&&ReferenceEquals(view,target)&&generation==token;}
-        bool CanExpand {get{return !closed&&expanded&&app.Pet.IsVisible&&app.Config.MonitorCodex&&app.Codex.Current.Connected;}}
+        bool CanExpand {get{return !closed&&!app.UpdatePreparing&&expanded&&app.Pet.IsVisible&&app.Config.MonitorCodex&&app.Codex.Current.Connected;}}
         async void StartView(){
             if(view!=null||!CanExpand)return;
             await releaseTask;if(view!=null||!CanExpand)return;
@@ -70,8 +71,9 @@ namespace DesktopKitten {
         }
         async Task InitializeView(WebView2CompositionControl target,int token,string sessionNonce){
             try{
-                string localComponents=await Task.Run(()=>CodexNativeComponents.Prepare(assetRoot,Path.Combine(app.Store.DirectoryPath,"codex-components")));
+                string components=await Task.Run(()=>CodexNativeComponents.Prepare(assetRoot,Path.Combine(app.Store.DirectoryPath,"codex-components")));
                 if(!Current(target,token))return;
+                localComponents=components;
                 string profile=Path.Combine(app.Store.DirectoryPath,"native-task-webview");
                 var environment=await CoreWebView2Environment.CreateAsync(null,profile,new CoreWebView2EnvironmentOptions("--disable-background-networking --disable-sync --no-first-run"));
                 // Once environment creation has started, finish creating its controller even after a collapse.
@@ -135,7 +137,7 @@ namespace DesktopKitten {
             badge.ToolTip=expanded?"收起任务":app.Codex.Current.Connected?"显示任务，共 "+ActivityCount+" 个":app.Codex.Current.Detail;
             Canvas.SetLeft(badge,pose.Badge.Left-pose.Window.Left);Canvas.SetTop(badge,pose.Badge.Top-pose.Window.Top);
             loading.Visibility=expanded&&!pose.Tray.IsEmpty?Visibility.Visible:Visibility.Collapsed;
-            if(!pose.Tray.IsEmpty){Canvas.SetLeft(loading,pose.Tray.Left-pose.Window.Left+(pose.Tray.Width-142)/2);Canvas.SetTop(loading,pose.Tray.Top-pose.Window.Top);loading.Width=Math.Min(142,pose.Tray.Width);loading.Height=Math.Min(28,pose.Tray.Height);loading.Content=!app.Codex.Current.Connected?"连接恢复中 · 点此重试":Error!=null?"任务未就绪 · 点此重试":"加载任务…";loading.ToolTip=Error??app.Codex.Current.Detail;}
+            if(!pose.Tray.IsEmpty){Canvas.SetLeft(loading,pose.Tray.Left-pose.Window.Left+(pose.Tray.Width-142)/2);Canvas.SetTop(loading,pose.Tray.Top-pose.Window.Top);loading.Width=Math.Min(142,pose.Tray.Width);loading.Height=Math.Min(28,pose.Tray.Height);loading.Content=!app.Codex.Current.Connected?app.Codex.Current.RetryLabel:Error!=null?(Error.Contains("未适配")?"任务界面未适配 · 重试":"任务未就绪 · 点此重试"):"加载任务…";loading.ToolTip=Error??app.Codex.Current.Detail;}
         }
         void ShapeWindow(){
             if(pose==null)return;var source=PresentationSource.FromVisual(this);if(source==null)return;var m=source.CompositionTarget.TransformToDevice;
@@ -154,7 +156,7 @@ namespace DesktopKitten {
         async Task OnMessage(WebView2CompositionControl target,int token,CoreWebView2WebMessageReceivedEventArgs e){try{
             if(!Current(target,token)||e.Source!="https://grassfish-pet.local/index.html")return;
             var data=json.DeserializeObject(e.TryGetWebMessageAsString());if(JsonValue.Text(data,"nonce")!=nonce)return;string action=JsonValue.Text(data,"action");
-            if(action=="ready"){ready=true;LastColdLoadMilliseconds=loadWatch.Elapsed.TotalMilliseconds;target.Visibility=expanded?Visibility.Visible:Visibility.Hidden;DrawLight();Publish();return;}
+            if(action=="ready"){ready=true;string mounted=localComponents;if(mounted!=null)await Task.Run(()=>CodexNativeComponents.MarkReady(mounted));if(!Current(target,token))return;LastColdLoadMilliseconds=loadWatch.Elapsed.TotalMilliseconds;target.Visibility=expanded?Visibility.Visible:Visibility.Hidden;DrawLight();Publish();return;}
             if(action=="view-error"){Error="官方任务组件发生错误："+JsonValue.Text(data,"error");ReleaseView();DrawLight();return;}
             if(action=="measure"){double height;double.TryParse(JsonValue.Text(data,"height"),out height);if(height>=40&&height<=10000&&Math.Abs(height-measuredHeight)>1){measuredHeight=height;Position();}return;}
             if(action=="expand"){if(JsonValue.Bool(data,"expanded"))Expand();else Collapse();return;}

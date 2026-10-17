@@ -57,7 +57,7 @@ namespace DesktopKitten {
             var parsed=CodexConnection.ParseTasks(list);check(parsed.Tasks.Count==3&&parsed.Count==3&&parsed.Running==1&&parsed.Waiting==1&&parsed.Unread==1,"task dedupe local filtering object/string states");check(parsed.Tasks[0].Title=="原标题","source title retained verbatim");
             var doc=j.DeserializeObject("{\"turns\":[{\"items\":[{\"type\":\"agentMessage\",\"phase\":\"final_answer\",\"text\":\"新回复\"}]},{\"items\":[{\"type\":\"userMessage\",\"content\":[{\"type\":\"text\",\"text\":\"旧问题\"}]},{\"type\":\"commandExecution\",\"text\":\"不应显示\"}]}]}");var transcript=CodexConnection.Transcript(doc);check(transcript.IndexOf("旧问题")<transcript.IndexOf("新回复")&&!transcript.Contains("不应显示"),"transcript chronology and tool exclusion");
             check(GrassFishUi.Create()[typeof(System.Windows.Controls.Button)] is System.Windows.Style,"grass fish WPF theme parses");
-            PipeFixture(check,false);PipeFixture(check,true);NavigationFailureFixture(check);
+            PipeFixture(check,false);PipeFixture(check,true);PipeFixture(check,false,true);PipeFixture(check,true,true);NavigationFailureFixture(check);
             using(var bridge=new CodexConnection("unused","unused")){var task=new CodexTask{Id="existing",HostId="local",Kind="codex",CanReply=true};bool rejected=false;try{bridge.Send(task,"text").GetAwaiter().GetResult();}catch(InvalidOperationException){rejected=true;}check(rejected,"disconnected send gate");rejected=false;try{bridge.Open(task).GetAwaiter().GetResult();}catch(InvalidOperationException){rejected=true;}check(rejected,"disconnected navigation gate");bridge.Current.Connected=true;bridge.Enable(false);rejected=false;try{bridge.Send(task,"text").GetAwaiter().GetResult();}catch(InvalidOperationException){rejected=true;}check(rejected,"disabled send gate");rejected=false;try{bridge.Open(task).GetAwaiter().GetResult();}catch(InvalidOperationException){rejected=true;}check(rejected,"disabled navigation gate");}
             string appPath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"WindowsApps/OpenAI.Codex_26.1007.9446.0_x64__2p2nqsd0c76g0/app/ChatGPT.exe");
             check(CodexWindowActivation.IsCodexDesktop(appPath),"verified existing Codex package window accepted");
@@ -79,8 +79,8 @@ namespace DesktopKitten {
                 check(server.Wait(5000),"navigation fixture completes without launching Codex");
             }
         }
-        static void PipeFixture(Action<bool,string> check,bool failure){
-            string name="codex-browser-use-fixture-"+Guid.NewGuid().ToString("N");var requests=new List<object>();var json=new JavaScriptSerializer();
+        static void PipeFixture(Action<bool,string> check,bool failure,bool modern=false){
+            string name=(modern?"codex-app-tools-fixture-":"codex-browser-use-fixture-")+Guid.NewGuid().ToString("N");var requests=new List<object>();var json=new JavaScriptSerializer();
             // The fixture owns an isolated pipe. Never routes test sends to the real desktop app.
             using(var ready=new ManualResetEvent(false)){
                 var server=Task.Run(()=>{for(int i=0;i<(failure?1:4);i++)using(var pipe=new NamedPipeServerStream(name,PipeDirection.InOut,1,PipeTransmissionMode.Byte,PipeOptions.Asynchronous)){ready.Set();pipe.WaitForConnection();byte[] h=new byte[4];Exact(pipe,h);var b=new byte[BitConverter.ToInt32(h,0)];Exact(pipe,b);object req=json.DeserializeObject(Encoding.UTF8.GetString(b));requests.Add(req);var args=JsonValue.Value(req,"params");string tool=JsonValue.Text(args,"tool");

@@ -23,10 +23,11 @@ issues, checked, archive_files = [], 0, 0
 hashes = {}
 skip = {'.git', 'release', 'dist', 'audit-results', '__pycache__', '.vs'}
 text_ext = {'.cs', '.md', '.ps1', '.iss', '.isl', '.json', '.html', '.js', '.css', '.txt', '.py', '.config', '.manifest'}
-private_names = {'auth.json', 'settings.json', 'settings.json.bak', 'codex-connection.json', 'session_index.jsonl', 'task-health.json'}
+private_names = {'auth.json', 'settings.json', 'settings.json.bak', 'codex-connection.json', 'session_index.jsonl', 'task-health.json', 'update-state.json', 'update-ticket.json'}
 private_parts = {'vendor', 'qa-profile', 'native-qa-profile', 'webview-profile', 'components-cache', 'codex-components', 'native-task-webview', 'node_modules', '本机记录', '验证'}
 rules = {
     'private-key': re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
+    'rsa-private-xml': re.compile(r'<(?:D|P|Q|DP|DQ|InverseQ)>[A-Za-z0-9+/=]{8,}</'),
     'github-token': re.compile(r'(?:github_pat_|gh[pousr]_)[A-Za-z0-9_]{20,}'),
     'api-secret': re.compile(r'\bsk-[A-Za-z0-9_-]{24,}'),
     'personal-session-id': re.compile(r'\b01[0-9a-f]{6}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b', re.I),

@@ -119,7 +119,9 @@ namespace DesktopKitten {
             GrassFishTests.Run(check);groups.Add("custom schedules migration and restart dedupe, 1452 popup positions, local task filtering and isolated named-pipe send fixtures");
             ReminderWorkflowTests.Run(check);groups.Add("complete-snooze-skip-close history, today agenda, manual/daily quiet, restart and legacy migration");
             DistributionTests.Run(check);groups.Add("clean-user Codex profile discovery, package identity, component integrity and pet menu activation lifecycle");
+            CodexCompatibilityTests.Run(check);groups.Add("capability-based endpoint discovery, bounded candidates, version-independent verified cache, legacy migration, corruption rejection and unknown-build fallback");
             NativeOverlayTests.Run(check);groups.Add("official notification lifecycle, activity summaries and multi-screen task overlay geometry");
+            UpdateTests.Run(check);groups.Add("signed update trust, numeric versions, daily checks, opt-out, skip, cancellation, busy gate, invalid downloads, draft guards, bounded backup and fixture-only install recovery");
             return new JavaScriptSerializer().Serialize(new{ok=true,assertions=count,groups,imagesGenerated=0,registryModified=false,kind="automated fixtures; not all real desktop interactions"});
         }
         public static byte[] Pixels(BitmapSource source){var bitmap=new FormatConvertedBitmap(source,PixelFormats.Bgra32,null,0);var data=new byte[bitmap.PixelWidth*bitmap.PixelHeight*4];bitmap.CopyPixels(data,bitmap.PixelWidth*4,0);return data;}

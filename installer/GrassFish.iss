@@ -29,10 +29,14 @@ CloseApplications=no
 RestartApplications=no
 DirExistsWarning=no
 DisableDirPage=no
-InfoBeforeFile=安装前请读.txt
+InfoBeforeFile={#PayloadDir}\安装与Codex兼容说明.txt
 SetupLogging=yes
 VersionInfoDescription=草鱼桌面小猫安装程序
 VersionInfoProductName=草鱼桌面小猫
+VersionInfoVersion={#AppVersion}
+VersionInfoTextVersion={#AppVersion}
+VersionInfoProductVersion={#AppVersion}
+VersionInfoProductTextVersion={#AppVersion}
 Uninstallable=yes
 ChangesAssociations=no
 [Languages]
