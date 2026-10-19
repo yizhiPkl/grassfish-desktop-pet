@@ -39,7 +39,7 @@ namespace DesktopKitten {
         int age;
         readonly Stopwatch performance=Stopwatch.StartNew();
         public KittenApp(string[] args,EventWaitHandle reopen) {
-            ShutdownMode=ShutdownMode.OnExplicitShutdown;this.reopen=reopen;HeadlessQa=args.Contains("--reminder-ui-test");Qa=HeadlessQa||args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview");
+            ShutdownMode=ShutdownMode.OnExplicitShutdown;this.reopen=reopen;HeadlessQa=args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test");Qa=HeadlessQa||args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview");
             Exe=System.Reflection.Assembly.GetExecutingAssembly().Location;
             string root=Path.GetDirectoryName(Exe);
             var directory=Qa?Path.Combine(root,args.Contains("--native-task-preview")?"native-qa-profile":"qa-profile"):Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"DesktopKitten");
@@ -65,6 +65,7 @@ namespace DesktopKitten {
             menu.Items.Add(new Forms.ToolStripSeparator());AddMenu(menu,"退出桌面小猫",Quit);
             seconds=new DispatcherTimer(DispatcherPriority.Background) {Interval=TimeSpan.FromSeconds(1)};seconds.Tick+=Tick;
             Startup+=(s,e)=>{
+                if(args.Contains("--completion-ui-test")){int index=Array.IndexOf(args,"--completion-ui-test");Dispatcher.BeginInvoke(new Action(async()=>{try{await CompletionUiTests.Run(this,args[index+1]);}finally{Quit();}}));return;}
                 if(HeadlessQa){int index=Array.IndexOf(args,"--reminder-ui-test");try{ReminderUiTests.Run(this,args[index+1]);}finally{Quit();}return;}
                 Pet.Show();if(!args.Contains("--background"))OpenPanel();Bubble.Refresh();Monitor.Enable(Config.MonitorCodex);if(!Qa){Monitor.Start();Codex.Enable(Config.MonitorCodex);Codex.Start();}Badge.Refresh();seconds.Start();
                 int nativePreview=Array.IndexOf(args,"--native-task-preview");if(nativePreview>=0&&nativePreview+1<args.Length){seconds.Stop();var previewTimer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(300)};previewTimer.Tick+=async(sender,evt)=>{previewTimer.Stop();await NativeOverlayTests.Preview(this,args[nativePreview+1]);Quit();};previewTimer.Start();}
@@ -134,7 +135,7 @@ namespace DesktopKitten {
         public void PositionBubble(){if(Badge!=null&&Badge.IsVisible)Badge.Position();if(Bubble!=null&&Bubble.IsVisible)Bubble.Position(Pet);}
         public void OpenTasks(){if(!Pet.IsVisible)ShowPet(false);Badge.Expand();Codex.Refresh();}
         public void Preview(string kind){Scheduler.AddPreview(kind);Persist();ShowPet(false);Bubble.Refresh();RefreshPanel();}
-        public void DismissReminder(){if(Completion.Active){Completion.Dismiss();Pet.UpdateStatus();}else {var item=Scheduler.Current(DateTime.Now,DateTime.UtcNow);if(item!=null)Scheduler.Resolve(item.Key,"closed",DateTime.UtcNow);Persist();}Bubble.Refresh();RefreshPanel();}
+        public void DismissReminder(){if(Completion.Active){Pet.BeginCompletionReturn();Completion.Dismiss();Pet.UpdateStatus();}else {var item=Scheduler.Current(DateTime.Now,DateTime.UtcNow);if(item!=null)Scheduler.Resolve(item.Key,"closed",DateTime.UtcNow);Persist();}Bubble.Refresh();RefreshPanel();}
         public void PreviewCompletion(){if(Art.Complete==null||Status.State=="running"||Status.State=="waiting")return;Completion.Preview(Pet.AnimationTime);Pet.UpdateStatus();ShowPet(false);Bubble.Refresh();}
         public void Quit(){if(quitting)return;quitting=true;Persist();Updates.Dispose();seconds.Stop();if(updateWindow!=null)updateWindow.Close();if(today!=null)today.Close();if(panel!=null)panel.CloseForExit();Badge.Close();Bubble.Close();Pet.Close();Shutdown();}
         void RenderPreviews(){
@@ -187,7 +188,7 @@ namespace DesktopKitten {
                 try {var result=Tests.Run();if(args.Length>1){Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1])));File.WriteAllText(args[1],result);}return 0;}
                 catch(Exception e){if(args.Length>1)File.WriteAllText(args[1],new JavaScriptSerializer().Serialize(new{ok=false,error=e.ToString()}));return 1;}
             }
-            string scope="Local\\DesktopKitten-"+Environment.UserName+(args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview")||args.Contains("--reminder-ui-test")?"-QA":"");bool first;
+            string scope="Local\\DesktopKitten-"+Environment.UserName+(args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview")||args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test")?"-QA":"");bool first;
             using(var mutex=new Mutex(true,scope,out first)) {
                 var reopen=new EventWaitHandle(false,EventResetMode.AutoReset,scope+"-Open");
                 if(!first){reopen.Set();reopen.Dispose();return 0;}

@@ -8,7 +8,7 @@
 
 **不用安装 Codex，也能用草鱼的日程提醒。** 连接 Codex 只是可选功能。
 
-> 当前发布：**0.1.9.0**。适用于 Windows x64；Codex 联动仍有版本兼容限制。
+> 当前发布：**0.1.9.2**。适用于 Windows x64；Codex 联动仍有版本兼容限制。
 
 ## 第一次用？从这里开始
 
@@ -16,12 +16,12 @@
 
 ### 第一步：下载安装程序
 
-👉 **[点击下载草鱼 0.1.9.0 安装程序](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.0/GrassFish-Setup-0.1.9.0-win-x64.exe)**（约 20 MB）
+👉 **[点击下载草鱼 0.1.9.2 安装程序](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/GrassFish-Setup-0.1.9.2-win-x64.exe)**（约 20 MB）
 
-下载后的文件叫：**GrassFish-Setup-0.1.9.0-win-x64.exe**。
+下载后的文件叫：**GrassFish-Setup-0.1.9.2-win-x64.exe**。
 
 - 不要点绿色的 Code 按钮去下载源码，普通使用不需要它。
-- 如果没有开始下载，打开[本版下载页](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.0)，在 Assets（附件）里选择上面这个 .exe 文件。不要选 Source code，那是源码，不是安装程序。
+- 如果没有开始下载，打开[本版下载页](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.2)，在 Assets（附件）里选择上面这个 .exe 文件。不要选 Source code，那是源码，不是安装程序。
 - 如果下载打不开，先确认网络能访问 GitHub，再回到本页重新点击下载；不需要登录或申请仓库权限。
 - **只从你信任的项目页面下载。** 当前安装程序还没有发布者数字签名，Windows 可能提示“未知发布者”；不要为了安装关闭杀毒软件。来源不明、文件名不符或校验不一致时，不要运行。
 
@@ -108,7 +108,7 @@
 
 新手建议下载上面的 .exe 安装程序。
 
-如果你想用便携版，可以下载 [0.1.9.0 便携 ZIP](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.0/GrassFish-0.1.9.0-win-x64-portable.zip)，**先全部解压到一个固定文件夹**，再运行里面的 DesktopKitten.exe。不要只把一个 exe 拖出来，也不要直接在压缩包里运行。
+如果你想用便携版，可以下载 [0.1.9.2 便携 ZIP](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/GrassFish-0.1.9.2-win-x64-portable.zip)，**先全部解压到一个固定文件夹**，再运行里面的 DesktopKitten.exe。不要只把一个 exe 拖出来，也不要直接在压缩包里运行。
 
 ### 小猫不见了怎么办？
 
@@ -136,16 +136,17 @@
 
 ### 想核对下载文件有没有变化？
 
-下载本版的 [SHA256SUMS.txt](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.0/SHA256SUMS.txt)。[文件校验说明](./docs/文件校验.md)里有一步一步的操作。校验能确认文件一致，**不等于已经获得 Windows 发布者认证**。
+下载本版的 [SHA256SUMS.txt](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/SHA256SUMS.txt)。[文件校验说明](./docs/文件校验.md)里有一步一步的操作。校验能确认文件一致，**不等于已经获得 Windows 发布者认证**。
 
-## 0.1.9.0 改了什么？
+## 0.1.9.2 改了什么？
 
-- 增加更新提示、手动检查、每日检查和跳过版本；没有常驻更新进程。
-- 关于页面与安装程序同步显示真实版本号。
-- 右下角托盘菜单移除三个预览，把退出放到最后。
-- 改进 Codex 新入口的连接探测和已校验旧界面缓存的复用。
+- 任务完成后，草鱼拨开键盘、自然抬头，轻轻左右摆尾等你查看，不再挥手。
+- 关闭完成提示后，尾巴顺势复位，再回到原来的待机样子；双耳、猫咪大小和脚底位置保持一致。
+- 每周提醒按周一到周日排列，周日放在周六后面，旧日程的提醒日期不变。
+- 已装 0.1.9.0 或更新版本的朋友，可以在“小窝 → 关于草鱼 → 检查更新”升级；无需先卸载。
+- Codex 可选联动的兼容范围未扩大；本版不代表任意新版 Codex 都能使用。
 
-查看[本版说明与下载](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.0)或[全部发布版本](https://github.com/yizhiPkl/grassfish-desktop-pet/releases)。仓库的 downloads 文件夹保留的是 0.1.8.1 历史包，新用户请使用上面的新版下载入口。
+查看[本版说明与下载](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.2)或[全部发布版本](https://github.com/yizhiPkl/grassfish-desktop-pet/releases)。仓库的 downloads 文件夹保留的是 0.1.8.1 历史包，新用户请使用上面的新版下载入口。
 
 ---
 

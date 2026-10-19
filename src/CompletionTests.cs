@@ -46,7 +46,7 @@ namespace DesktopKitten {
             instant.Update(Status("review",1),10000,true);check(!instant.PromptReady,"elapsed wall time alone cannot make an unrendered prompt ready");
             instant.Update(Status("idle",1),11000,false);check(!instant.Active&&!instant.PromptReady&&!instant.TryPresentPrompt(new WorkPose{IsEntry=false}),"disabling integration cannot leave a delayed prompt");
             var clip=art.Complete;check(clip!=null,"completion clip installed");
-            check(clip.Width==272&&clip.Height==272&&clip.OriginX==-24&&clip.OriginY==-12,"square completion padding preserves registration and ears");
+            check(clip.Width==288&&clip.Height==272&&clip.OriginX==-40&&clip.OriginY==-12,"left tail padding preserves body registration and both ears");
             check(clip.HandoffWorkIndex==art.Work.Loop.Length-1,"handoff matches reference keyboard pose");
             check(clip.Entry.Length>10&&clip.Loop.Length>12,"continuous transition and waving loop retained");
             check(clip.Sample(0,true).IsEntry&&!clip.Sample(clip.EntryDurationMs,true).IsEntry,"completion transition is one shot");
@@ -56,13 +56,43 @@ namespace DesktopKitten {
             foreach(var item in clip.Entry.Concat(clip.Loop)){
                 bool entry=clip.Entry.Contains(item);var pose=new WorkPose{IsEntry=entry,Index=Array.IndexOf(entry?clip.Entry:clip.Loop,item),File=item.File};
                 var bitmap=art.CompletionFrame(pose);
-                check(bitmap.PixelWidth==272&&bitmap.PixelHeight==272,"completion dimensions "+item.File);
+                check(bitmap.PixelWidth==clip.Width&&bitmap.PixelHeight==clip.Height,"completion dimensions "+item.File);
                 check(object.ReferenceEquals(bitmap,art.CompletionFrame(pose)),"completion cache "+item.File);
             }
-            var initial=new CroppedBitmap(art.CompletionFrame(clip.Sample(0,true)),new System.Windows.Int32Rect(0,12,272,248));
+            var initial=new CroppedBitmap(art.CompletionFrame(clip.Sample(0,true)),new System.Windows.Int32Rect(16,12,272,248));
             var workPose=new WorkPose{IsEntry=false,Index=clip.HandoffWorkIndex,File=art.Work.Loop[clip.HandoffWorkIndex].File};
             check(Tests.Pixels(initial).SequenceEqual(Tests.Pixels(art.WorkFrame(workPose))),"handoff initial pose pixel-exact to installed work");
             check(!object.ReferenceEquals(art.CompletionFrame(clip.Sample(0,true)),art.WorkFrame(art.Work.Sample(0,true))),"work and completion caches do not collide");
+            check(clip.Recovery!=null&&clip.Recovery.Length>clip.Loop.Length,"completion has a continuous bounded forward recovery track");
+            var neutral=new WriteableBitmap(clip.Width,clip.Height,96,96,System.Windows.Media.PixelFormats.Bgra32,null);
+            var idlePixels=new FormatConvertedBitmap(art.Frame(0,0,0),System.Windows.Media.PixelFormats.Bgra32,null,0);var small=new byte[192*208*4];idlePixels.CopyPixels(small,192*4,0);
+            neutral.WritePixels(new System.Windows.Int32Rect(40,12,192,208),small,192*4,0);
+            var final=art.CompletionFrame(new WorkPose{File=clip.Recovery.Last().File,Index=clip.Recovery.Length-1});
+            check(Tests.Pixels(final).SequenceEqual(Tests.Pixels(neutral)),"return track ends pixel-exactly at real idle with identical canvas registration");
+            check(clip.Loop.Last().File=="native-086.png"&&clip.Loop.First().File=="native-087.png","waiting loop boundary follows adjacent native source frames");
+            check(clip.Loop.All(f=>f.DurationMs>=41&&f.DurationMs<=42),"native tail cadence has no artificial endpoint pause");
+            check(Enumerable.Range(63,54).All(n=>clip.Loop.Any(f=>f.File=="native-"+n.ToString("000")+".png")),"native right swing and left swing are both retained");
+            check(!clip.Entry.Concat(clip.Loop).Any(f=>f.File.Contains("tail-return")||f.File.Contains("tail-reset")),"no reversed tail aliases in entry or waiting loop");
+            var original=Tests.Pixels(neutral);
+            foreach(var f in clip.Loop.Concat(clip.Recovery).GroupBy(f=>f.File).Select(g=>g.First())){
+                var actual=Tests.Pixels(art.CompletionFrame(new WorkPose{File=f.File}));bool intact=true;
+                for(int y=0;y<112&&intact;y++)for(int x=98;x<250;x++){
+                    int p=(y*clip.Width+x)*4;
+                    if(original[p+3]>=220&&(actual[p]!=original[p]||actual[p+1]!=original[p+1]||actual[p+2]!=original[p+2]||actual[p+3]!=original[p+3])){intact=false;break;}
+                    if(original[p+3]>0&&actual[p+3]<original[p+3]){intact=false;break;}
+                }
+                check(intact,"original head and BOTH ears remain in front of moving tail: "+f.File);
+            }
+            foreach(var f in clip.Entry.Concat(clip.Loop)){
+                var player=new CompletionReturn(clip);bool entry=clip.Entry.Contains(f);var displayed=new WorkPose{File=f.File,IsEntry=entry};
+                check(player.Begin(displayed,100,true),"return accepts every visible completion phase: "+f.File);
+                check(player.Sample(100).File==f.File,"close begins on the exact displayed frame, not a new loop: "+f.File);
+                int before=-1;for(int step=0;step<=20;step++){var p=player.Sample(100+player.Duration*step/20);check(p.Index>=before,"recovery source index is forward-only: "+f.File);before=p.Index;}
+                check(!player.Active&&before==(entry?clip.EntryRecovery:clip.Recovery).Length-1,"every return finishes at exact idle: "+f.File);
+                check(player.Duration<=(entry?2800:1600),"return duration bounded for phase: "+f.File);
+            }
+            var cancelled=new CompletionReturn(clip);check(!cancelled.Begin(clip.Sample(0,false),0,false),"reduced motion does not add a recovery delay");
+            cancelled.Begin(clip.Sample(clip.EntryDurationMs+100,true),0,true);cancelled.Cancel();check(!cancelled.Active&&cancelled.Sample(10)==null,"new work or dragging can cancel completion recovery immediately");
         }
     }
 }

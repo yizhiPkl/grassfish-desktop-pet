@@ -69,6 +69,15 @@ namespace DesktopKitten {
                         Click(update.Root,"Skip");check(new UpdatePreferencesStore(Path.Combine(output,"update-ui-fixture")).Value.SkippedVersion==feed.Offer.Manifest.version,"actual skip button saves only selected version");
                     }
                 }
+                var weekdays=Find<WrapPanel>(panel.Root,"Days").Children.OfType<CheckBox>().ToArray();
+                check(weekdays.Select(b=>(int)b.Tag).SequenceEqual(new[]{1,2,3,4,5,6,0})&&weekdays.Select(b=>Convert.ToString(b.Content)).SequenceEqual(new[]{"一","二","三","四","五","六","日"}),"weekly selector displays Monday through Sunday without changing day identifiers");
+                Click(panel.Root,"NewSchedule");check(weekdays.Where(b=>b.IsChecked==true).Select(b=>(int)b.Tag).SequenceEqual(new[]{1,2,3,4,5}),"default weekday selection remains Monday through Friday");
+                var weekend=new ScheduleRule{Title="周末顺序测试",Mode="weekly",Time="09:00",Days=new[]{0,6},NextUtc=DateTime.UtcNow.AddDays(1),LastFiredLocal=DateTime.Today.AddDays(-7)};cfg.CustomSchedules.Add(weekend);panel.OpenScheduleEditor(weekend.Id);
+                check(weekdays.Where(b=>b.IsChecked==true).Select(b=>(int)b.Tag).SequenceEqual(new[]{6,0})&&weekdays.Last().IsChecked==true,"legacy Sunday and Saturday settings still select the correct last two controls");
+                Capture(panel,Path.Combine(output,"09-每周提醒周日排在最后.png"),760,900);Click(panel.Root,"SaveSchedule");var unchanged=cfg.CustomSchedules.Single(r=>r.Id==weekend.Id);
+                check(unchanged.Days.SequenceEqual(new[]{0,6})&&unchanged.NextUtc==weekend.NextUtc&&unchanged.LastFiredLocal==weekend.LastFiredLocal,"saving an unchanged legacy weekly rule preserves stored weekday order and firing state");
+                Find<TextBox>(panel.Root,"ScheduleTitle").Text="周一和周日测试";Find<ComboBox>(panel.Root,"ScheduleMode").SelectedIndex=1;foreach(var day in weekdays)day.IsChecked=(int)day.Tag==0||(int)day.Tag==1;Click(panel.Root,"SaveSchedule");
+                check(cfg.CustomSchedules.Single(r=>r.Title=="周一和周日测试").Days.SequenceEqual(new[]{0,1}),"new weekly rule still saves Sunday as zero and Monday as one");
                 panel.OpenScheduleEditor(null);check(Find<ComboBox>(panel.Root,"ScheduleMode").SelectedIndex==2,"temporary small thing uses existing one-shot editor");
                 Find<TextBox>(panel.Root,"ScheduleTitle").Text="重要约定测试";Find<CheckBox>(panel.Root,"ScheduleImportant").IsChecked=true;Click(panel.Root,"SaveSchedule");check(cfg.CustomSchedules.Any(r=>r.Title=="重要约定测试"&&r.AllowDuringQuiet&&r.Mode=="once"),"important and one-shot fields save through actual editor button");
                 panel.SelectTab(0);Capture(panel,Path.Combine(output,"04-控制面板入口.png"),760,700);

@@ -17,6 +17,9 @@ namespace DesktopKitten {
     public sealed class WorkAnimation {
         public int SchemaVersion, Width, Height, OriginX, OriginY, HandoffWorkIndex;
         public WorkFrame[] Entry, Loop;
+        // Optional completion-only recovery tracks. Working animation is unchanged.
+        public WorkFrame[] Recovery;
+        public WorkFrame[] EntryRecovery;
         int[] entryTimes, loopTimes;
         public int EntryDurationMs { get { return entryTimes.Sum(); } }
         public int LoopDurationMs { get { return loopTimes.Sum(); } }
@@ -33,6 +36,8 @@ namespace DesktopKitten {
                 OriginX > 0 || OriginX < -128 || OriginY > 0 || OriginY < -128)
                 throw new InvalidDataException("工作动画画布配置无效");
             CheckFrames(Entry, "入场"); CheckFrames(Loop, "循环");
+            if(Recovery!=null){CheckFrames(Recovery,"恢复");if(Loop.Any(f=>!Recovery.Any(r=>r.File==f.File)))throw new InvalidDataException("完成动画恢复路径缺少循环帧");}
+            if(EntryRecovery!=null){CheckFrames(EntryRecovery,"入场恢复");if(Entry.Any(f=>!EntryRecovery.Any(r=>r.File==f.File)))throw new InvalidDataException("完成动画恢复路径缺少入场帧");}
             entryTimes = Entry.Select(f => f.DurationMs).ToArray();
             loopTimes = Loop.Select(f => f.DurationMs).ToArray();
         }

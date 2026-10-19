@@ -80,7 +80,7 @@ namespace DesktopKitten {
             return bitmap;
         }
         public BitmapSource CompletionFrame(WorkPose pose) {
-            string key="complete:"+pose.Key;BitmapSource bitmap;
+            string key="complete:file:"+pose.File;BitmapSource bitmap;
             if(!frames.TryGetValue(key,out bitmap)) {
                 bitmap=Load(Path.Combine(directory,"complete",pose.File));
                 if(bitmap.PixelWidth!=Complete.Width||bitmap.PixelHeight!=Complete.Height)throw new InvalidDataException("完成动画图片尺寸不符");
@@ -116,6 +116,9 @@ namespace DesktopKitten {
         readonly DispatcherTimer timer;
         readonly Stopwatch clock=Stopwatch.StartNew();
         readonly WorkSession workSession=new WorkSession();
+        readonly CompletionReturn completionReturn;
+        WorkPose lastCompletionPose;
+        double completionIdleUntil;
         readonly PettingPlayer petting;
         double pettingIdleOrigin=-1;
         double displayScale;
@@ -128,14 +131,16 @@ namespace DesktopKitten {
         public string ActiveState {get{return state;}}
         public string CurrentFrame {get{return frameKey;}}
         public int FrameUpdates {get;private set;}
+        internal BitmapSource QaDisplayedFrame {get{if(!app.Qa)throw new InvalidOperationException("QA only");return picture.Source as BitmapSource;}}
+        internal void QaRender(){if(!app.Qa)throw new InvalidOperationException("QA only");Render();}
         public double AnimationTime {get{return clock.Elapsed.TotalMilliseconds;}}
-        WorkAnimation CurrentClip {get{return state=="petting"?app.Art.PettingLayout:state=="complete"?app.Art.Complete:state=="running"?app.Art.Work:null;}}
+        WorkAnimation CurrentClip {get{return state=="petting"?app.Art.PettingLayout:state=="complete"||state=="complete-return"?app.Art.Complete:state=="running"?app.Art.Work:null;}}
         public Rect CatBounds { get {
             var clip=CurrentClip;
             return new Rect(Left-(clip!=null?clip.OriginX:0)*displayScale,Top-(clip!=null?clip.OriginY:0)*displayScale,192*displayScale,208*displayScale);
         } }
         public PetWindow(KittenApp app) {
-            this.app=app;if(app.Art.Petting!=null)petting=new PettingPlayer(app.Art.Petting);displayScale=PetSizing.Scale(app.Config.PetSize);var dimensions=PetSizing.Dimensions(app.Config.PetSize);Title="桌面小猫";Width=dimensions.Width;Height=dimensions.Height;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
+            this.app=app;completionReturn=new CompletionReturn(app.Art.Complete);if(app.Art.Petting!=null)petting=new PettingPlayer(app.Art.Petting);displayScale=PetSizing.Scale(app.Config.PetSize);var dimensions=PetSizing.Dimensions(app.Config.PetSize);Title="桌面小猫";Width=dimensions.Width;Height=dimensions.Height;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;
             AllowsTransparency=true;Background=Brushes.Transparent;Topmost=true;ShowInTaskbar=app.Qa;ShowActivated=false;
             picture=new Image {Width=Width,Height=Height,Stretch=Stretch.Uniform};Content=picture;
             RenderOptions.SetBitmapScalingMode(picture,BitmapScalingMode.HighQuality);
@@ -185,6 +190,7 @@ namespace DesktopKitten {
         }
         public void SetState(string value){
             if(value=="unknown")value="idle";if(value==state)return;
+            if(value=="running-left"||value=="running-right")completionReturn.Cancel();
             bool positioned=IsLoaded&&!double.IsNaN(Left)&&!double.IsNaN(Top);var oldBounds=positioned?CatBounds:Rect.Empty;
             var oldClip=CurrentClip;
             state=value;stateStart=clock.Elapsed.TotalMilliseconds;gaze=-1;frameKey=null;
@@ -194,7 +200,8 @@ namespace DesktopKitten {
             app.Completion.Update(app.Status,clock.Elapsed.TotalMilliseconds,app.Config.MonitorCodex&&app.Art.Complete!=null);
             workSession.Update(app.Status.State=="running",clock.Elapsed.TotalMilliseconds);
             if(dragging){if(petting!=null)petting.Cancel(clock.Elapsed.TotalMilliseconds);return;}
-            if(app.Completion.Active){if(petting!=null)petting.Cancel(clock.Elapsed.TotalMilliseconds);SetState(app.Completion.AwaitingHandoff?"running":"complete");return;}
+            if(app.Completion.Active){completionReturn.Cancel();if(petting!=null)petting.Cancel(clock.Elapsed.TotalMilliseconds);SetState(app.Completion.AwaitingHandoff?"running":"complete");return;}
+            if(completionReturn.Active){if(app.Status.State=="running"||app.Status.State=="waiting"||app.Status.State=="failed")completionReturn.Cancel();else{SetState("complete-return");return;}}
             if(state=="petting"&&EnjoymentAllowed())return;
             if(state=="petting"&&petting!=null)petting.Cancel(clock.Elapsed.TotalMilliseconds);
             // Keep the original short greeting when connecting to an idle Codex.
@@ -202,7 +209,10 @@ namespace DesktopKitten {
             if(app.Status.State=="idle"&&state=="waving"&&clock.Elapsed.TotalMilliseconds-stateStart<Motion.Durations["waving"].Sum()*3)return;
             SetState(app.Completion.SuppressReview(app.Status)?"idle":app.Status.State);
         }
-        bool EnjoymentAllowed(){return PettingRules.Allowed(app.Completion.SuppressReview(app.Status)?"idle":app.Status.State,app.Completion.Active,app.Config.Animations,dragging,mouseDown);}
+        public void BeginCompletionReturn(){
+            if(state=="complete"&&app.Completion.PromptReady&&!dragging&&completionReturn.Begin(lastCompletionPose,clock.Elapsed.TotalMilliseconds,app.Config.Animations)){if(petting!=null)petting.Cancel(clock.Elapsed.TotalMilliseconds);SetState("complete-return");}
+        }
+        bool EnjoymentAllowed(){return !completionReturn.Active&&clock.Elapsed.TotalMilliseconds>=completionIdleUntil&&PettingRules.Allowed(app.Completion.SuppressReview(app.Status)?"idle":app.Status.State,app.Completion.Active,app.Config.Animations,dragging,mouseDown);}
         bool RenderPetting(double now){
             if(petting==null)return false;
             bool allowed=EnjoymentAllowed()&&(state=="idle"||state=="petting")&&(ContextMenu==null||!ContextMenu.IsOpen);
@@ -217,10 +227,19 @@ namespace DesktopKitten {
             if(pettingKey!=frameKey){picture.Source=app.Art.PettingFrame(pose.layers);frameKey=pettingKey;FrameUpdates++;}gaze=-1;return true;
         }
         void Render() {
+            if(state=="complete-return"&&completionReturn.Active){
+                if(app.Completion.Active||app.Status.State=="running"||app.Status.State=="waiting"||app.Status.State=="failed"||dragging||!app.Config.Animations){completionReturn.Cancel();UpdateStatus();}
+                else{
+                    var returned=completionReturn.Sample(clock.Elapsed.TotalMilliseconds);string returnKey="complete-return:"+returned.File;
+                    if(returnKey!=frameKey){picture.Source=app.Art.CompletionFrame(returned);frameKey=returnKey;FrameUpdates++;}
+                    if(!completionReturn.Active){SetState("idle");stateStart=clock.Elapsed.TotalMilliseconds;pettingIdleOrigin=stateStart;completionIdleUntil=stateStart+350;picture.Source=app.Art.Frame(0,0,0);frameKey="0:0:0";gaze=-1;}
+                    return;
+                }
+            }
             if(RenderPetting(clock.Elapsed.TotalMilliseconds))return;
             double now=clock.Elapsed.TotalMilliseconds, elapsed=now-stateStart;
             string active=state;
-            if(!dragging && active!="idle" && active!="running" && active!="complete" && elapsed>=Motion.Durations[active].Sum()*3) {
+            if(!dragging && active!="idle" && active!="running" && active!="complete" && active!="complete-return" && elapsed>=Motion.Durations[active].Sum()*3) {
                 if(app.Completion.Active)SetState(app.Completion.AwaitingHandoff?"running":"complete");else
                 if(app.Status.State=="running")SetState("running");else if(app.Status.State=="waiting"&&state!="waiting")SetState("waiting");else SetState("idle");
                 active=state;elapsed=now-stateStart;
@@ -237,11 +256,12 @@ namespace DesktopKitten {
             }
             if(active=="complete"&&app.Art.Complete!=null){
                 var pose=app.Art.Complete.Sample(app.Completion.Elapsed(now),app.Config.Animations);string completeKey="complete:"+pose.Key;
+                lastCompletionPose=pose;
                 if(completeKey!=frameKey){picture.Source=app.Art.CompletionFrame(pose);frameKey=completeKey;FrameUpdates++;}
                 if(app.Completion.TryPresentPrompt(pose))app.Bubble.Refresh();gaze=-1;return;
             }
             int row=Motion.Rows[active],column=app.Config.Animations?Motion.Frame(Motion.Durations[active],elapsed):0, phase=row==0&&app.Config.Animations?Motion.BlinkPhase(pettingIdleOrigin<0?now:now-pettingIdleOrigin):0;
-            if(app.Config.FollowMouse && app.Config.Animations && active=="idle" && !dragging && !hovered) {
+            if(app.Config.FollowMouse && app.Config.Animations && active=="idle" && !dragging && !hovered && now>=completionIdleUntil) {
                 var cursor=WindowNative.Cursor(this);int direction=Motion.Direction(cursor.X-(Left+Width/2),cursor.Y-(Top+Height/2),gaze,app.Config.FollowRadius,38*PetSizing.Scale(app.Config.PetSize));
                 if(direction!=gaze && (direction<0||now-gazeChanged>=70)){gaze=direction;gazeChanged=now;}
                 if(gaze>=0){row=9+gaze/8;column=gaze%8;phase=0;}

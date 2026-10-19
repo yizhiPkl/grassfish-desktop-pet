@@ -1,333 +1,1239 @@
 {
   "SchemaVersion": 1,
-  "Width": 272,
+  "Width": 288,
   "Height": 272,
-  "OriginX": -24,
+  "OriginX": -40,
   "OriginY": -12,
+  "HandoffWorkIndex": 26,
   "Entry": [
     {
-      "File": "enter-000.png",
-      "DurationMs": 83,
-      "SourceFrame": 1
+      "File": "pose-000.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-001.png",
-      "DurationMs": 84,
-      "SourceFrame": 3
+      "File": "pose-002.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-002.png",
-      "DurationMs": 83,
-      "SourceFrame": 5
+      "File": "pose-003.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-003.png",
-      "DurationMs": 83,
-      "SourceFrame": 7
+      "File": "pose-004.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-004.png",
-      "DurationMs": 84,
-      "SourceFrame": 9
+      "File": "pose-006.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-005.png",
-      "DurationMs": 83,
-      "SourceFrame": 11
+      "File": "pose-008.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-006.png",
-      "DurationMs": 83,
-      "SourceFrame": 13
+      "File": "pose-009.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-007.png",
-      "DurationMs": 84,
-      "SourceFrame": 15
+      "File": "pose-010.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-008.png",
-      "DurationMs": 83,
-      "SourceFrame": 17
+      "File": "pose-012.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-009.png",
-      "DurationMs": 83,
-      "SourceFrame": 19
+      "File": "pose-014.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-010.png",
-      "DurationMs": 84,
-      "SourceFrame": 21
+      "File": "pose-015.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-011.png",
-      "DurationMs": 83,
-      "SourceFrame": 23
+      "File": "pose-016.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-012.png",
-      "DurationMs": 83,
-      "SourceFrame": 25
+      "File": "pose-018.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-013.png",
-      "DurationMs": 84,
-      "SourceFrame": 27
+      "File": "pose-020.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-014.png",
-      "DurationMs": 83,
-      "SourceFrame": 29
+      "File": "pose-021.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-015.png",
-      "DurationMs": 83,
-      "SourceFrame": 31
+      "File": "pose-022.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-016.png",
-      "DurationMs": 84,
-      "SourceFrame": 33
+      "File": "pose-024.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-017.png",
-      "DurationMs": 83,
-      "SourceFrame": 35
+      "File": "pose-026.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-018.png",
-      "DurationMs": 83,
-      "SourceFrame": 37
+      "File": "pose-027.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-019.png",
-      "DurationMs": 84,
-      "SourceFrame": 39
+      "File": "pose-028.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-020.png",
-      "DurationMs": 83,
-      "SourceFrame": 41
+      "File": "pose-030.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-021.png",
-      "DurationMs": 83,
-      "SourceFrame": 43
+      "File": "pose-032.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-022.png",
-      "DurationMs": 84,
-      "SourceFrame": 45
+      "File": "pose-033.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-023.png",
-      "DurationMs": 83,
-      "SourceFrame": 47
+      "File": "pose-034.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-024.png",
-      "DurationMs": 83,
-      "SourceFrame": 49
+      "File": "pose-036.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-025.png",
-      "DurationMs": 84,
-      "SourceFrame": 51
+      "File": "pose-038.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-026.png",
-      "DurationMs": 83,
-      "SourceFrame": 53
+      "File": "pose-039.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-027.png",
-      "DurationMs": 83,
-      "SourceFrame": 55
+      "File": "pose-040.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-028.png",
-      "DurationMs": 84,
-      "SourceFrame": 57
+      "File": "pose-042.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-029.png",
-      "DurationMs": 83,
-      "SourceFrame": 59
+      "File": "pose-044.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-030.png",
-      "DurationMs": 83,
-      "SourceFrame": 61
+      "File": "pose-045.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-031.png",
-      "DurationMs": 84,
-      "SourceFrame": 63
+      "File": "pose-046.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-032.png",
-      "DurationMs": 83,
-      "SourceFrame": 65
+      "File": "pose-048.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-033.png",
-      "DurationMs": 83,
-      "SourceFrame": 67
+      "File": "pose-050.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-034.png",
-      "DurationMs": 84,
-      "SourceFrame": 69
+      "File": "pose-051.png",
+      "DurationMs": 42
     },
     {
-      "File": "enter-035.png",
-      "DurationMs": 83,
-      "SourceFrame": 71
+      "File": "pose-052.png",
+      "DurationMs": 83
     },
     {
-      "File": "enter-036.png",
-      "DurationMs": 83,
-      "SourceFrame": 73
+      "File": "pose-054.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-056.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-057.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-058.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-060.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-062.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-063.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-064.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-066.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-068.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-069.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-070.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-072.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-074.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-075.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-076.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-078.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-080.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-081.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-082.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-084.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-086.png",
+      "DurationMs": 42
     }
   ],
   "Loop": [
     {
-      "File": "loop-000.png",
-      "DurationMs": 84,
-      "SourceFrame": 75
+      "File": "native-087.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-001.png",
-      "DurationMs": 83,
-      "SourceFrame": 77
+      "File": "native-088.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-002.png",
-      "DurationMs": 83,
-      "SourceFrame": 79
+      "File": "native-089.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-003.png",
-      "DurationMs": 84,
-      "SourceFrame": 81
+      "File": "native-090.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-004.png",
-      "DurationMs": 83,
-      "SourceFrame": 83
+      "File": "native-091.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-005.png",
-      "DurationMs": 83,
-      "SourceFrame": 85
+      "File": "native-092.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-006.png",
-      "DurationMs": 84,
-      "SourceFrame": 87
+      "File": "native-093.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-007.png",
-      "DurationMs": 83,
-      "SourceFrame": 89
+      "File": "native-094.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-008.png",
-      "DurationMs": 83,
-      "SourceFrame": 91
+      "File": "native-095.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-009.png",
-      "DurationMs": 84,
-      "SourceFrame": 93
+      "File": "native-096.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-010.png",
-      "DurationMs": 83,
-      "SourceFrame": 95
+      "File": "native-097.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-011.png",
-      "DurationMs": 83,
-      "SourceFrame": 97
+      "File": "native-098.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-012.png",
-      "DurationMs": 84,
-      "SourceFrame": 99
+      "File": "native-099.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-013.png",
-      "DurationMs": 83,
-      "SourceFrame": 101
+      "File": "native-100.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-014.png",
-      "DurationMs": 83,
-      "SourceFrame": 103
+      "File": "native-101.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-015.png",
-      "DurationMs": 84,
-      "SourceFrame": 105
+      "File": "native-102.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-016.png",
-      "DurationMs": 83,
-      "SourceFrame": 107
+      "File": "native-103.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-017.png",
-      "DurationMs": 83,
-      "SourceFrame": 109
+      "File": "native-104.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-018.png",
-      "DurationMs": 84,
-      "SourceFrame": 111
+      "File": "native-105.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-019.png",
-      "DurationMs": 83,
-      "SourceFrame": 113
+      "File": "native-106.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-020.png",
-      "DurationMs": 83,
-      "SourceFrame": 115
+      "File": "native-107.png",
+      "DurationMs": 41
     },
     {
-      "File": "loop-021.png",
-      "DurationMs": 84,
-      "SourceFrame": 117
+      "File": "native-108.png",
+      "DurationMs": 42
     },
     {
-      "File": "loop-022.png",
-      "DurationMs": 83,
-      "SourceFrame": 119
+      "File": "native-109.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-110.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-111.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-112.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-113.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-114.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-115.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-116.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "seam-01.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-02.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "seam-03.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-04.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-05.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "seam-06.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-07.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-08.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-063.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-064.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-065.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-066.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-067.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-068.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-069.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-070.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-071.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-072.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-073.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-074.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-075.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-076.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-077.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-078.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-079.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-080.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-081.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-082.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-083.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-084.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-085.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-086.png",
+      "DurationMs": 41
     }
   ],
-  "HandoffWorkIndex": 26,
-  "SourceSha256": "f3c1db8494f94295d05a88c94e8870cb9fb5ebd5fabf1839686bbf7dabf08e67",
-  "SourceFps": 24,
-  "SourceFrames": 124,
-  "EntryOnce": true,
-  "LoopRange": [
-    75,
-    121
+  "Recovery": [
+    {
+      "File": "seam-01.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-02.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "seam-03.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-04.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-05.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "seam-06.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-07.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "seam-08.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-063.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-064.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-065.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-066.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-067.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-068.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-069.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-070.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-071.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-072.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-073.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-074.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-075.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-076.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-077.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-078.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-079.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-080.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-081.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-082.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-083.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-084.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-085.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-086.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-087.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-088.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-089.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-090.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-091.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-092.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-093.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-094.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-095.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-096.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-097.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-098.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-099.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-100.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-101.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-102.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-103.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-104.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-105.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-106.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-107.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-108.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-109.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-110.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-111.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-112.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-113.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-114.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-115.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-116.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-01.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-02.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-03.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-04.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-05.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-06.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-07.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-08.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "idle-neutral.png",
+      "DurationMs": 42
+    }
   ],
-  "Registration": {
-    "Scale": 0.3541666666666667,
-    "Offset": [
-      0,
-      0
-    ],
-    "PerFrameFitting": false,
-    "SquarePaddingPreserved": true
-  },
-  "NewImagesGenerated": 0,
-  "InitialColorBridgeMs": 250,
-  "Decoder": "FFmpeg",
-  "LoopForwardOnly": true
+  "EntryRecovery": [
+    {
+      "File": "pose-000.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-002.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-003.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-004.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-006.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-008.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-009.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-010.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-012.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-014.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-015.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-016.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-018.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-020.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-021.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-022.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-024.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-026.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-027.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-028.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-030.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-032.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-033.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-034.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-036.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-038.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-039.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-040.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-042.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-044.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-045.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-046.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-048.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-050.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-051.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-052.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-054.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-056.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-057.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "pose-058.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-060.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "pose-062.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-063.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-064.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-066.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-068.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-069.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-070.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-072.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-074.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-075.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-076.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-078.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-080.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-081.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "entry-head-082.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-084.png",
+      "DurationMs": 83
+    },
+    {
+      "File": "entry-head-086.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-087.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-088.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-089.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-090.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-091.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-092.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-093.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-094.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-095.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-096.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-097.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-098.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-099.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-100.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-101.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-102.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-103.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-104.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-105.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-106.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-107.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-108.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-109.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-110.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-111.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-112.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-113.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "native-114.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-115.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "native-116.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-01.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-02.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-03.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-04.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-05.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "settle-06.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-07.png",
+      "DurationMs": 42
+    },
+    {
+      "File": "settle-08.png",
+      "DurationMs": 41
+    },
+    {
+      "File": "idle-neutral.png",
+      "DurationMs": 42
+    }
+  ],
+  "SourceFps": 24,
+  "NativeTailSourceRange": [
+    63,
+    116
+  ],
+  "NativeFramesAllPresent": true,
+  "NativeForwardOnly": true,
+  "ReverseFrames": 0,
+  "AddedEndpointHoldMs": 0,
+  "ClosureMs": 333,
+  "ClosureMethod": "matched tail cross-section morph, no reverse or double-tail crossfade",
+  "TailCapRepairs": [
+    {
+      "frame": 97,
+      "realTipReference": 96,
+      "translation": [
+        -1,
+        2
+      ],
+      "repairedArea": "tail cap only, no animation frames removed",
+      "matchError": 7.871870559818131
+    },
+    {
+      "frame": 98,
+      "realTipReference": 96,
+      "translation": [
+        -2,
+        4
+      ],
+      "repairedArea": "tail cap only, no animation frames removed",
+      "matchError": 8.857247560860094
+    },
+    {
+      "frame": 99,
+      "realTipReference": 96,
+      "translation": [
+        -2,
+        5
+      ],
+      "repairedArea": "tail cap only, no animation frames removed",
+      "matchError": 11.999926588993084
+    },
+    {
+      "frame": 100,
+      "realTipReference": 96,
+      "translation": [
+        -1,
+        5
+      ],
+      "repairedArea": "tail cap only, no animation frames removed",
+      "matchError": 16.80151084588425
+    },
+    {
+      "frame": 101,
+      "realTipReference": 96,
+      "translation": [
+        -1,
+        5
+      ],
+      "repairedArea": "tail cap only, no animation frames removed",
+      "matchError": 17.75041204887752
+    }
+  ],
+  "SourceSha256": "cf5cba54a989f431b154797ee9b1b09c3385eee0cfbd239137b3880298d6ac2c",
+  "PreviewOnly": false,
+  "InstallationAuthorized": true,
+  "ForegroundCompleteBothEars": true,
+  "ForegroundBodyFromOriginalIdle": true,
+  "TailBehindHeadAndBothEars": true,
+  "PreviewRevision": "full-ear-protection",
+  "ReleaseVersion": "0.1.9.2"
 }

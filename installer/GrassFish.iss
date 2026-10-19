@@ -55,6 +55,11 @@ Name: "{autodesktop}\草鱼桌面小猫"; Filename: "{app}\DesktopKitten.exe"; W
 Filename: "{app}\DesktopKitten.exe"; Description: "启动草鱼桌面小猫"; Flags: nowait postinstall skipifsilent
 [InstallDelete]
 ; Only retire obsolete application-owned resources; never touch user settings.
+Type: files; Name: "{app}\assets\complete\enter-*.png"; Check: IsGrassFishUpgrade
+Type: files; Name: "{app}\assets\complete\loop-*.png"; Check: IsGrassFishUpgrade
+Type: files; Name: "{app}\assets\complete\tail-return-*.png"; Check: IsGrassFishUpgrade
+Type: files; Name: "{app}\assets\complete\entry-tail-reset-*.png"; Check: IsGrassFishUpgrade
+Type: files; Name: "{app}\assets\complete\pose-*.png"; Check: IsGrassFishUpgrade
 Type: files; Name: "{app}\assets\codex-connection.json"; Check: IsGrassFishUpgrade
 Type: filesandordirs; Name: "{app}\assets\native-task-ui\vendor"; Check: IsGrassFishUpgrade
 [Code]

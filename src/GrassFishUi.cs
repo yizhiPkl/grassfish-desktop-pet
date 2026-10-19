@@ -55,7 +55,7 @@ namespace DesktopKitten {
             summaryMode=false;summaryActions.Visibility=Visibility.Collapsed;
             if(app.Completion.Active&&!app.Completion.PromptReady){reminderKey=null;return false;}
             reminderActions.Visibility=app.Completion.Active?Visibility.Collapsed:Visibility.Visible;reminderKey=null;
-            if(app.Completion.Active){title.Text="做好啦，快来验收喵";body.Text="草鱼收起键盘，招招手等你验收。看完点右上角 ×，我就安静陪着你。";tag.Text="草鱼 · 任务完成";counter.Text="轻轻点 ×，草鱼就回到待机";}
+            if(app.Completion.Active){title.Text="做好啦，快来验收喵";body.Text="草鱼拨开键盘，摇着尾巴等你看看。看完点右上角 ×，我就安静陪着你。";tag.Text="草鱼 · 任务完成";counter.Text="轻轻点 ×，草鱼收好尾巴回到待机";}
             else {var r=app.Scheduler.Current(DateTime.Now,DateTime.UtcNow);if(r==null)return false;
                 if(!r.AllowDuringQuiet&&!ReminderWorkflow.IsPreview(r)&&app.Scheduler.SummaryVisible(DateTime.Now,DateTime.UtcNow)){
                     summaryMode=true;reminderActions.Visibility=Visibility.Collapsed;summaryActions.Visibility=Visibility.Visible;var items=app.Scheduler.SummaryItems(DateTime.UtcNow);title.Text="安静时间结束啦";tag.Text="草鱼 · 小事汇总";body.Text="刚才有 "+items.Count+" 件小事等你："+string.Join("、",items.Take(3).Select(x=>x.Title))+(items.Count>3?"…":"。")+"可以一起去今日小事里看看。";counter.Text="点 × 只收起汇总，不计为完成";
