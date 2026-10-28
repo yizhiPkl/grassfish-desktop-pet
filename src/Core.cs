@@ -188,6 +188,7 @@ namespace DesktopKitten {
         }
     }
     public static class Motion {
+        public const int GazeDirectionCount=32;
         public static readonly int[] Idle = { 1680, 660, 660, 840, 840, 1920 };
         public static readonly Dictionary<string, int[]> Durations = new Dictionary<string, int[]> {
             { "idle", Idle }, { "running", new[] {120,120,120,120,120,220} },
@@ -211,10 +212,10 @@ namespace DesktopKitten {
             double distance = Math.Sqrt(dx * dx + dy * dy); if (distance <= deadzone || distance > radius) return -1;
             double a = (Math.Atan2(dx, -dy) * 180 / Math.PI + 360) % 360;
             if (previous >= 0) {
-                double difference = Math.Abs(a - previous * 22.5); difference = Math.Min(difference, 360 - difference);
-                if (difference < 14.25) return previous;
+                double difference = Math.Abs(a - previous * (360.0/GazeDirectionCount)); difference = Math.Min(difference, 360 - difference);
+                if (difference < 180.0/GazeDirectionCount+3) return previous;
             }
-            return ((int)Math.Floor(a / 22.5 + .5)) % 16;
+            return ((int)Math.Floor(a / (360.0/GazeDirectionCount) + .5)) % GazeDirectionCount;
         }
     }
 }

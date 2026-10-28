@@ -20,6 +20,8 @@ namespace DesktopKitten {
         [DllImport("user32.dll")] public static extern bool GetCursorPos(out Point p);
         [DllImport("user32.dll", EntryPoint="GetWindowLongW")] static extern int GetWindowLong(IntPtr h,int index);
         [DllImport("user32.dll", EntryPoint="SetWindowLongW")] static extern int SetWindowLong(IntPtr h,int index,int value);
+        [DllImport("user32.dll")] static extern bool SetWindowPos(IntPtr h,IntPtr after,int x,int y,int width,int height,uint flags);
+        public static void RaiseWithoutActivation(Window w){var h=new WindowInteropHelper(w).Handle;if(h!=IntPtr.Zero)SetWindowPos(h,new IntPtr(-1),0,0,0,0,0x0001|0x0002|0x0010);}
         public static void NoActivate(Window w, bool toolWindow) { var h=new WindowInteropHelper(w).Handle; int style=GetWindowLong(h,-20)|0x08000000; SetWindowLong(h,-20,toolWindow?style|0x80:style&~0x80); }
         public static void Interactive(Window w,bool active){var h=new WindowInteropHelper(w).Handle;int style=GetWindowLong(h,-20);SetWindowLong(h,-20,active?style&~0x08000000:style|0x08000000);}
         public static System.Windows.Point Cursor(Window w) {
@@ -40,6 +42,7 @@ namespace DesktopKitten {
     }
     public sealed class Assets {
         public readonly BitmapSource Portrait;
+        public readonly GazeAnimation Gaze;
         public readonly WorkAnimation Work;
         public readonly WorkAnimation Complete;
         public readonly PettingAnimation Petting;
@@ -55,6 +58,7 @@ namespace DesktopKitten {
         public Assets(string directory) {
             this.directory=directory;
             Portrait=Load(Path.Combine(directory,"portrait.png"));
+            Gaze=GazeAnimation.Load(Path.Combine(directory,"gaze","animation.json"));
             Work=WorkAnimation.Load(Path.Combine(directory,"work","animation.json"));
             Complete=WorkAnimation.Load(Path.Combine(directory,"complete","animation.json"));
             if(Complete!=null && Work!=null && Complete.HandoffWorkIndex>=Work.Loop.Length)throw new InvalidDataException("完成动画交接帧超出工作循环");
@@ -67,6 +71,16 @@ namespace DesktopKitten {
             if(!frames.TryGetValue(key,out bitmap)) {
                 // Pixel-identical small files are loaded on demand, not the whole animated spritesheet.
                 bitmap=Load(Path.Combine(directory,"frames",row+"-"+column+"-"+phase+".png"));frames[key]=bitmap;
+            }
+            return bitmap;
+        }
+        public BitmapSource GazeFrame(int direction){
+            if(direction<0||direction>=Gaze.Count)throw new ArgumentOutOfRangeException("direction");
+            string key="gaze:"+direction;BitmapSource bitmap;
+            if(!frames.TryGetValue(key,out bitmap)){
+                bitmap=Load(Path.Combine(directory,"gaze",Gaze.Frames[direction]));
+                if(bitmap.PixelWidth!=Gaze.Width||bitmap.PixelHeight!=Gaze.Height)throw new InvalidDataException("转头图片尺寸不符");
+                frames[key]=bitmap;
             }
             return bitmap;
         }
@@ -125,7 +139,7 @@ namespace DesktopKitten {
         string state="waving", frameKey=null;
         double stateStart;
         int gaze=-1;
-        double gazeChanged;
+        readonly GazeFollower gazeFollower=new GazeFollower();
         bool mouseDown,dragging,hovered;
         System.Windows.Point down,origin;
         public string ActiveState {get{return state;}}
@@ -177,7 +191,7 @@ namespace DesktopKitten {
             var bounds=positioned?PetSizing.ResizeKeepingFeet(CatBounds,app.Config.PetSize):new Rect(0,0,dimensions.Width,dimensions.Height);
             displayScale=PetSizing.Scale(app.Config.PetSize);ApplyArtworkLayout();
             if(positioned){PlaceCat(bounds.Left,bounds.Top);WindowNative.Clamp(this);app.Config.X=CatBounds.Left;app.Config.Y=CatBounds.Top;}
-            gaze=-1;frameKey=null;Render();if(positioned)app.PositionBubble();
+            gaze=-1;gazeFollower.Reset();frameKey=null;Render();if(positioned)app.PositionBubble();
         }
         void ApplyArtworkLayout(){
             var clip=CurrentClip;
@@ -193,7 +207,7 @@ namespace DesktopKitten {
             if(value=="running-left"||value=="running-right")completionReturn.Cancel();
             bool positioned=IsLoaded&&!double.IsNaN(Left)&&!double.IsNaN(Top);var oldBounds=positioned?CatBounds:Rect.Empty;
             var oldClip=CurrentClip;
-            state=value;stateStart=clock.Elapsed.TotalMilliseconds;gaze=-1;frameKey=null;
+            state=value;stateStart=clock.Elapsed.TotalMilliseconds;gaze=-1;gazeFollower.Reset();frameKey=null;
             if(oldClip!=CurrentClip){ApplyArtworkLayout();if(positioned){PlaceCat(oldBounds.Left,oldBounds.Top);WindowNative.Clamp(this);app.PositionBubble();}}
         }
         public void UpdateStatus(){
@@ -262,10 +276,10 @@ namespace DesktopKitten {
             }
             int row=Motion.Rows[active],column=app.Config.Animations?Motion.Frame(Motion.Durations[active],elapsed):0, phase=row==0&&app.Config.Animations?Motion.BlinkPhase(pettingIdleOrigin<0?now:now-pettingIdleOrigin):0;
             if(app.Config.FollowMouse && app.Config.Animations && active=="idle" && !dragging && !hovered && now>=completionIdleUntil) {
-                var cursor=WindowNative.Cursor(this);int direction=Motion.Direction(cursor.X-(Left+Width/2),cursor.Y-(Top+Height/2),gaze,app.Config.FollowRadius,38*PetSizing.Scale(app.Config.PetSize));
-                if(direction!=gaze && (direction<0||now-gazeChanged>=70)){gaze=direction;gazeChanged=now;}
-                if(gaze>=0){row=9+gaze/8;column=gaze%8;phase=0;}
-            }else gaze=-1;
+                var cursor=WindowNative.Cursor(this);gaze=Motion.Direction(cursor.X-(Left+Width/2),cursor.Y-(Top+Height/2),gaze,app.Config.FollowRadius,38*PetSizing.Scale(app.Config.PetSize));
+                int shown=gazeFollower.Update(gaze,now);
+                if(shown>=0){string gazeKey="gaze:"+shown;if(gazeKey!=frameKey){picture.Source=app.Art.GazeFrame(shown);frameKey=gazeKey;FrameUpdates++;}return;}
+            }else{gaze=-1;gazeFollower.Reset();}
             string key=row+":"+column+":"+phase;
             if(key!=frameKey){picture.Source=app.Art.Frame(row,column,phase);frameKey=key;FrameUpdates++;}
         }

@@ -8,7 +8,7 @@
 
 **不用安装 Codex，也能用草鱼的日程提醒。** 连接 Codex 只是可选功能。
 
-> 当前发布：**0.1.9.2**。适用于 Windows x64；Codex 联动仍有版本兼容限制。
+> 当前发布：**0.1.9.4**。适用于 Windows x64；Codex 联动仍有版本兼容限制。
 
 ## 第一次用？从这里开始
 
@@ -16,12 +16,12 @@
 
 ### 第一步：下载安装程序
 
-👉 **[点击下载草鱼 0.1.9.2 安装程序](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/GrassFish-Setup-0.1.9.2-win-x64.exe)**（约 20 MB）
+👉 **[点击下载草鱼 0.1.9.4 安装程序](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.4/GrassFish-Setup-0.1.9.4-win-x64.exe)**（约 24 MB）
 
-下载后的文件叫：**GrassFish-Setup-0.1.9.2-win-x64.exe**。
+下载后的文件叫：**GrassFish-Setup-0.1.9.4-win-x64.exe**。
 
 - 不要点绿色的 Code 按钮去下载源码，普通使用不需要它。
-- 如果没有开始下载，打开[本版下载页](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.2)，在 Assets（附件）里选择上面这个 .exe 文件。不要选 Source code，那是源码，不是安装程序。
+- 如果没有开始下载，打开[本版下载页](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.4)，在 Assets（附件）里选择上面这个 .exe 文件。不要选 Source code，那是源码，不是安装程序。
 - 如果下载打不开，先确认网络能访问 GitHub，再回到本页重新点击下载；不需要登录或申请仓库权限。
 - **只从你信任的项目页面下载。** 当前安装程序还没有发布者数字签名，Windows 可能提示“未知发布者”；不要为了安装关闭杀毒软件。来源不明、文件名不符或校验不一致时，不要运行。
 
@@ -69,12 +69,15 @@
 
 ### 提醒弹出来以后
 
+> 以下交互已包含在 0.1.9.4 中。
+
 - **完成**：这一次已经做完了。
 - **稍后提醒**：过几分钟再叫你，可以选择时间。
-- **这次跳过**：跳过这一次，不会关掉以后所有提醒。
-- **×**：只是把纸条收起来，**不代表做完了**。
+- **跳过**：跳过这一次，不会关掉以后所有提醒。不再额外显示 × 收起按钮。
 
-打开“**今日小事**”，可以查看今天的安排、待处理事项和稍后提醒；收起来的事项也可以在那里重新提醒。
+新建或编辑日程时可勾选“重要约定”，已有待处理事项也能在“**今日小事**”里调整重要性。重要提醒优先显示，免打扰时仍会提醒；多个重要事项按到期时间依次显示，不叠开多个窗口。主动选择稍后提醒时，仍会等到你指定的时间。
+
+打开“**今日小事**”，可以查看今天的安排、待处理事项和稍后提醒。旧版“已收起”记录保留，并统一显示在“已跳过”中，不冒充完成。普通到期日程也不会被 Codex 完成提示一直挡住；日程处理后，未确认的任务完成提示继续显示。任务完成提示正文简化为“喵喵喵”，点“知道啦”收好。
 
 已处理记录按 7 天定期清理，最多保留 200 条。**没处理和稍后的事项，不会因为过了七天就自动消失。**
 
@@ -108,7 +111,7 @@
 
 新手建议下载上面的 .exe 安装程序。
 
-如果你想用便携版，可以下载 [0.1.9.2 便携 ZIP](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/GrassFish-0.1.9.2-win-x64-portable.zip)，**先全部解压到一个固定文件夹**，再运行里面的 DesktopKitten.exe。不要只把一个 exe 拖出来，也不要直接在压缩包里运行。
+如果你想用便携版，可以下载 [0.1.9.4 便携 ZIP](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.4/GrassFish-0.1.9.4-win-x64-portable.zip)，**先全部解压到一个固定文件夹**，再运行里面的 DesktopKitten.exe。不要只把一个 exe 拖出来，也不要直接在压缩包里运行。
 
 ### 小猫不见了怎么办？
 
@@ -136,17 +139,17 @@
 
 ### 想核对下载文件有没有变化？
 
-下载本版的 [SHA256SUMS.txt](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.2/SHA256SUMS.txt)。[文件校验说明](./docs/文件校验.md)里有一步一步的操作。校验能确认文件一致，**不等于已经获得 Windows 发布者认证**。
+下载本版的 [SHA256SUMS.txt](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/download/v0.1.9.4/SHA256SUMS.txt)。[文件校验说明](./docs/文件校验.md)里有一步一步的操作。校验能确认文件一致，**不等于已经获得 Windows 发布者认证**。
 
-## 0.1.9.2 改了什么？
+## 0.1.9.4 改了什么？
 
-- 任务完成后，草鱼拨开键盘、自然抬头，轻轻左右摆尾等你查看，不再挥手。
-- 关闭完成提示后，尾巴顺势复位，再回到原来的待机样子；双耳、猫咪大小和脚底位置保持一致。
-- 每周提醒按周一到周日排列，周日放在周六后面，旧日程的提醒日期不变。
-- 已装 0.1.9.0 或更新版本的朋友，可以在“小窝 → 关于草鱼 → 检查更新”升级；无需先卸载。
-- Codex 可选联动的兼容范围未扩大；本版不代表任意新版 Codex 都能使用。
+- 鼠标跟随转头升级为全新 32 方向，修正左下角多余耳廓，方向切换更细腻；原待机及其他动作不变。
+- 统一日程与任务提示优先级，支持新建、编辑日程及在“今日小事”中设置重要事项，到点优先显示。
+- 提醒弹窗仅保留“完成、稍后提醒、跳过”，取消额外的 × 收起按钮，简化“今日小事”。
+- 任务完成提示正文简化为“喵喵喵”，点击“知道啦”后按原动画回到待机。
+- 已装 0.1.9.0 或更新版本可通过“小窝 → 关于草鱼 → 检查更新”升级，保留日程与设置，无需先卸载。Codex 兼容范围未扩大。
 
-查看[本版说明与下载](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.2)或[全部发布版本](https://github.com/yizhiPkl/grassfish-desktop-pet/releases)。仓库的 downloads 文件夹保留的是 0.1.8.1 历史包，新用户请使用上面的新版下载入口。
+查看[本版说明与下载](https://github.com/yizhiPkl/grassfish-desktop-pet/releases/tag/v0.1.9.4)或[全部发布版本](https://github.com/yizhiPkl/grassfish-desktop-pet/releases)。仓库的 downloads 文件夹保留的是 0.1.8.1 历史包，新用户请使用上面的新版下载入口。
 
 ---
 

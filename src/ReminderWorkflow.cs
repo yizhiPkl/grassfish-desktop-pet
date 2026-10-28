@@ -32,21 +32,43 @@ namespace DesktopKitten {
         public string State;
         public bool Upcoming;
     }
+    // One arbitration point for all paper notes. Calendar reminders must never
+    // wait for a Codex acknowledgement or its animation handoff. Selecting a
+    // reminder does not consume the completion, so it can resume afterwards.
+    public enum NoticeKind { None, Reminder, Summary, Completion }
+    public sealed class NoticePresentation {
+        public NoticeKind Kind;
+        public Reminder Reminder;
+        public static NoticePresentation Select(Scheduler scheduler,CompletionSession completion,DateTime local,DateTime utc){
+            var reminder=scheduler.Current(local,utc);
+            if(reminder!=null)return new NoticePresentation{Kind=!reminder.AllowDuringQuiet&&!ReminderWorkflow.IsPreview(reminder)&&scheduler.SummaryVisible(local,utc)?NoticeKind.Summary:NoticeKind.Reminder,Reminder=reminder};
+            return new NoticePresentation{Kind=completion.Active&&completion.PromptReady?NoticeKind.Completion:NoticeKind.None};
+        }
+    }
     public sealed partial class Scheduler {
         string lastReady;bool lastQuiet;DateTime historyPruneDay=DateTime.MinValue;
         public Reminder Current(DateTime local,DateTime utc){
             bool quiet=QuietPolicy.IsQuiet(settings,local,utc);
-            return settings.Pending.FirstOrDefault(r=>r.SnoozeUntilUtc<=utc&&(!quiet||r.AllowDuringQuiet||ReminderWorkflow.IsPreview(r)));
+            return settings.Pending.Where(r=>r.SnoozeUntilUtc<=utc&&(!quiet||r.AllowDuringQuiet||ReminderWorkflow.IsPreview(r))).OrderByDescending(r=>r.AllowDuringQuiet).ThenBy(r=>r.Due).FirstOrDefault();
         }
         bool PresentationChanged(DateTime local,DateTime utc){var item=Current(local,utc);string key=item==null?null:item.Key;bool quiet=QuietPolicy.IsQuiet(settings,local,utc);bool priorSummary=settings.QuietSummaryPending;if((quiet||lastQuiet)&&SummaryItems(utc).Count>1)settings.QuietSummaryPending=true;bool changed=key!=lastReady||quiet!=lastQuiet||priorSummary!=settings.QuietSummaryPending;lastReady=key;lastQuiet=quiet;return changed;}
         public List<Reminder> SummaryItems(DateTime utc){return settings.Pending.Where(r=>r.SnoozeUntilUtc<=utc&&!r.AllowDuringQuiet&&!ReminderWorkflow.IsPreview(r)).ToList();}
         public bool SummaryVisible(DateTime local,DateTime utc){return settings.QuietSummaryPending&&!QuietPolicy.IsQuiet(settings,local,utc)&&SummaryItems(utc).Count>0;}
         public void PrepareQuietResume(DateTime local,DateTime utc){if(QuietPolicy.IsQuiet(settings,local,utc)&&SummaryItems(utc).Count>1)settings.QuietSummaryPending=true;}
         public void CloseSummary(DateTime utc){foreach(var r in SummaryItems(utc))Resolve(r.Key,"closed",utc);settings.QuietSummaryPending=false;}
+        public void SkipSummary(DateTime utc){foreach(var r in SummaryItems(utc))Resolve(r.Key,"skipped",utc);settings.QuietSummaryPending=false;}
         public void SnoozeSummary(DateTime utc){foreach(var r in SummaryItems(utc))Snooze(r.Key,10,utc);}
         public bool Snooze(string key,int minutes,DateTime utc){
             if(minutes<1||minutes>1440)return false;var r=settings.Pending.FirstOrDefault(x=>x.Key==key);if(r==null)return false;
             r.SnoozeUntilUtc=utc.AddMinutes(minutes);return true;
+        }
+        public bool SetImportance(string key,bool important,DateTime local,DateTime utc){
+            var r=settings.Pending.FirstOrDefault(x=>x.Key==key);
+            if(r==null){var planned=Today(local,utc).FirstOrDefault(x=>x.Upcoming&&x.Reminder.Key==key);if(planned==null||string.IsNullOrEmpty(planned.Reminder.ScheduleId))return false;r=planned.Reminder;}
+            var rule=settings.CustomSchedules.FirstOrDefault(x=>x.Id==r.ScheduleId);
+            if(rule!=null){rule.AllowDuringQuiet=important;foreach(var pending in settings.Pending.Where(x=>x.ScheduleId==rule.Id))pending.AllowDuringQuiet=important;}
+            else r.AllowDuringQuiet=important;
+            return true;
         }
         public bool Resolve(string key,string outcome,DateTime utc){
             if(!new[]{"done","skipped","closed"}.Contains(outcome))return false;
@@ -99,7 +121,7 @@ namespace DesktopKitten {
                 string key=rule.Mode=="interval"?"upcoming-interval:"+rule.Id+":"+rule.NextUtc.Ticks:"custom:"+rule.Id+":"+due.ToString("yyyy-MM-ddTHH:mm:ss")+":";
                 plan(new Reminder{Key=key,Kind="custom",Title=rule.Title,Message=rule.Message,ScheduleId=rule.Id,Due=due,AllowDuringQuiet=rule.AllowDuringQuiet});
             }
-            return rows.Values.OrderBy(r=>r.State=="pending"?0:r.State=="snoozed"?1:r.Upcoming?2:3).ThenBy(r=>r.State=="snoozed"?r.Reminder.SnoozeUntilUtc:r.Reminder.Due).ToList();
+            return rows.Values.OrderBy(r=>r.State=="pending"?0:r.State=="snoozed"?1:r.Upcoming?2:3).ThenByDescending(r=>r.Reminder.AllowDuringQuiet).ThenBy(r=>r.State=="snoozed"?r.Reminder.SnoozeUntilUtc:r.Reminder.Due).ToList();
         }
     }
 }

@@ -124,18 +124,21 @@ namespace DesktopKitten {
         public bool ResolveReminder(string key,string outcome){if(!Scheduler.Resolve(key,outcome,DateTime.UtcNow))return false;LocalRemindersChanged();return true;}
         public void ResolveAgenda(string key,string outcome,bool upcoming){bool changed=Scheduler.Resolve(key,outcome,DateTime.UtcNow);if(!changed&&upcoming)changed=Scheduler.ResolvePlanned(key,outcome,DateTime.Now,DateTime.UtcNow);if(changed)LocalRemindersChanged();}
         public bool SnoozeReminder(string key,int minutes){if(!Scheduler.Snooze(key,minutes,DateTime.UtcNow))return false;LocalRemindersChanged();return true;}
+        public void SetReminderImportance(string key,bool important){if(Scheduler.SetImportance(key,important,DateTime.Now,DateTime.UtcNow))LocalRemindersChanged();}
         public void RestoreReminder(string key){if(Scheduler.Restore(key))LocalRemindersChanged();}
         public void SetQuietMinutes(int minutes){SetQuietUntil(DateTime.UtcNow.AddMinutes(minutes));}
         public void SetQuietUntil(DateTime until){QuietPolicy.Start(Config,until,DateTime.UtcNow);LocalRemindersChanged();}
         public void ResumeReminders(){Scheduler.PrepareQuietResume(DateTime.Now,DateTime.UtcNow);QuietPolicy.Resume(Config,DateTime.Now,DateTime.UtcNow);LocalRemindersChanged();}
         public void CloseReminderSummary(){Scheduler.CloseSummary(DateTime.UtcNow);LocalRemindersChanged();}
         public void SnoozeReminderSummary(){Scheduler.SnoozeSummary(DateTime.UtcNow);LocalRemindersChanged();}
+        public void SkipReminderSummary(){Scheduler.SkipSummary(DateTime.UtcNow);LocalRemindersChanged();}
         public void ShowPet(bool locate){if(HeadlessQa)return;if(!Pet.IsVisible)Pet.Show();if(locate){var area=WindowNative.WorkArea(Pet,WindowNative.Cursor(Pet));var cat=Pet.CatBounds;Pet.PlaceCat(area.Right-cat.Width-48,area.Bottom-cat.Height-32);WindowNative.Clamp(Pet);Config.X=Pet.CatBounds.Left;Config.Y=Pet.CatBounds.Top;Persist();}Bubble.Refresh();Badge.Refresh();}
         public void HidePet(){Pet.Hide();Bubble.Hide();Badge.ReleaseImmediately();Badge.Hide();}
         public void PositionBubble(){if(Badge!=null&&Badge.IsVisible)Badge.Position();if(Bubble!=null&&Bubble.IsVisible)Bubble.Position(Pet);}
         public void OpenTasks(){if(!Pet.IsVisible)ShowPet(false);Badge.Expand();Codex.Refresh();}
         public void Preview(string kind){Scheduler.AddPreview(kind);Persist();ShowPet(false);Bubble.Refresh();RefreshPanel();}
-        public void DismissReminder(){if(Completion.Active){Pet.BeginCompletionReturn();Completion.Dismiss();Pet.UpdateStatus();}else {var item=Scheduler.Current(DateTime.Now,DateTime.UtcNow);if(item!=null)Scheduler.Resolve(item.Key,"closed",DateTime.UtcNow);Persist();}Bubble.Refresh();RefreshPanel();}
+        public void DismissCompletion(){if(!Completion.Active||!Completion.PromptReady)return;Pet.BeginCompletionReturn();Completion.Dismiss();Pet.UpdateStatus();Bubble.Refresh();RefreshPanel();}
+        public void DismissReminder(){var notice=NoticePresentation.Select(Scheduler,Completion,DateTime.Now,DateTime.UtcNow);if(notice.Kind==NoticeKind.Completion)DismissCompletion();else if(notice.Kind==NoticeKind.Reminder)ResolveReminder(notice.Reminder.Key,"skipped");else if(notice.Kind==NoticeKind.Summary)SkipReminderSummary();}
         public void PreviewCompletion(){if(Art.Complete==null||Status.State=="running"||Status.State=="waiting")return;Completion.Preview(Pet.AnimationTime);Pet.UpdateStatus();ShowPet(false);Bubble.Refresh();}
         public void Quit(){if(quitting)return;quitting=true;Persist();Updates.Dispose();seconds.Stop();if(updateWindow!=null)updateWindow.Close();if(today!=null)today.Close();if(panel!=null)panel.CloseForExit();Badge.Close();Bubble.Close();Pet.Close();Shutdown();}
         void RenderPreviews(){

@@ -4,6 +4,8 @@ namespace DesktopKitten {
     public sealed class ScheduleRule {
         public string Id=Guid.NewGuid().ToString("N"),Title="",Message="",Mode="daily",Time="09:00";
         public bool Enabled=true,Completed;
+        // Persist the existing field for backwards compatibility. Important
+        // schedules now also preempt other notes, not just bypass quiet hours.
         public bool AllowDuringQuiet;
         public int Minutes=60;public int[] Days=new[]{1,2,3,4,5};
         public DateTime DueLocal=DateTime.MinValue,NextUtc=DateTime.MinValue,LastFiredLocal=DateTime.MinValue;

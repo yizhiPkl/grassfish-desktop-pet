@@ -30,6 +30,7 @@ namespace DesktopKitten {
                 check(Find<TextBlock>(bubble,"Title").Text=="该喝水了喵"&&Find<TextBlock>(bubble,"Body").Text=="陪小猫喝口水吧，慢慢来就好。","only water title changes, body retained");
                 check(Find<WrapPanel>(bubble,"ReminderActions").Visibility==Visibility.Visible,"local reminder action row is present");
                 Capture(app.Bubble,Path.Combine(output,"01-喝水提醒.png"),284,222);
+                check(Math.Abs(Find<Button>(bubble,"DoneReminder").TranslatePoint(new Point(),bubble).Y-Find<Button>(bubble,"SkipReminder").TranslatePoint(new Point(),bubble).Y)<1,"three reminder actions remain on one row at the actual popup width");
                 Click(bubble,"DoneReminder");check(cfg.Pending.Count==0&&cfg.ReminderHistory.Single().Outcome=="done","actual WPF complete button records selected occurrence");
 
                 cfg.Pending.Add(new Reminder{Key="qa-meal",Kind="meal",Title=ReminderWorkflow.Title("meal"),Message="先把忙碌放一放，好好吃一顿饭吧。",Due=DateTime.Now});
@@ -42,8 +43,12 @@ namespace DesktopKitten {
 
                 cfg.Pending.Add(new Reminder{Key="qa-skip",Kind="custom",Title="站起来伸伸懒腰",Message="给肩颈一点轻松的时间。",Due=DateTime.Now});
                 app.Bubble.PrepareContent();Click(bubble,"SkipReminder");check(cfg.ReminderHistory.Any(r=>r.Key=="qa-skip"&&r.Outcome=="skipped")&&cfg.Pending.Single().Key=="qa-meal","skip button never targets an earlier snoozed item");
-                cfg.Pending[0].SnoozeUntilUtc=DateTime.MinValue;app.Bubble.PrepareContent();Click(bubble,"Dismiss");check(cfg.ReminderHistory.Single(r=>r.Key=="qa-meal").Outcome=="closed","close button does not count as done");agenda.Refresh(true);
-                ((AgendaRow)list.Items.Cast<AgendaRow>().Single(r=>r.Title=="该吃饭了喵")).Restore.Execute(null);check(cfg.Pending.Single().Key=="qa-meal","bound restore command returns closed reminder to queue");
+                cfg.Pending[0].SnoozeUntilUtc=DateTime.MinValue;app.Bubble.PrepareContent();Click(bubble,"SkipReminder");check(cfg.ReminderHistory.Single(r=>r.Key=="qa-meal").Outcome=="skipped","skip replaces the old close action without marking done");agenda.Refresh(true);
+                check(Find<ComboBox>(agenda.Root,"Filter").Items.Count==5,"today has no separate closed filter");
+                cfg.ReminderHistory.Add(new Reminder{Key="legacy-closed",Kind="custom",Title="旧版收起记录",Due=DateTime.Now,HandledUtc=DateTime.UtcNow,Outcome="closed"});
+                agenda.Refresh(true);Find<ComboBox>(agenda.Root,"Filter").SelectedIndex=4;
+                check(list.Items.Cast<AgendaRow>().Any(r=>r.Title=="旧版收起记录"&&r.StateText=="已跳过")&&cfg.ReminderHistory.Any(r=>r.Key=="legacy-closed"&&r.Outcome=="closed"),"legacy closed records share skipped filter without rewriting or losing history");Find<ComboBox>(agenda.Root,"Filter").SelectedIndex=0;
+                cfg.Pending.Add(new Reminder{Key="qa-next-meal",Kind="meal",Title=ReminderWorkflow.Title("meal"),Message="先把忙碌放一放，好好吃一顿饭吧。",Due=DateTime.Now});
 
                 Click(agenda.Root,"Quiet30");check(QuietPolicy.IsQuiet(cfg,DateTime.Now,DateTime.UtcNow)&&!app.Bubble.PrepareContent(),"30-minute button immediately silences ordinary notes");
                 cfg.Pending.Add(new Reminder{Key="qa-important",Kind="custom",Title="重要会议",Message="到约定的时间啦。",Due=DateTime.Now,AllowDuringQuiet=true});check(app.Bubble.PrepareContent()&&Find<TextBlock>(bubble,"Title").Text=="重要会议","important exception selected behind quiet ordinary reminder");
@@ -52,7 +57,7 @@ namespace DesktopKitten {
                 Find<TextBox>(agenda.Root,"QuietStart").Text="bad";Click(agenda.Root,"SaveQuiet");check(cfg.QuietStart=="22:30","invalid quiet edit cannot overwrite valid policy");Find<TextBox>(agenda.Root,"QuietStart").Text="22:30";
                 Click(agenda.Root,"Quiet60");check(cfg.QuietUntilUtc>DateTime.UtcNow.AddMinutes(59),"one-hour manual quiet button");
 
-                var when=DateTime.Now.AddMinutes(20);cfg.CustomSchedules.Add(new ScheduleRule{Title="记得拿快递",Mode="once",DueLocal=when,Time=when.ToString("HH:mm")});agenda.Refresh(true);Find<TextBlock>(agenda.Root,"Notes").Text="已处理记录按7天、最多200条清理；未处理和稍后项保留到你处理。×只收起，不计完成。";Capture(agenda,Path.Combine(output,"03-今日小事与免打扰.png"),700,700);
+                var when=DateTime.Now.AddMinutes(20);cfg.CustomSchedules.Add(new ScheduleRule{Title="记得拿快递",Mode="once",DueLocal=when,Time=when.ToString("HH:mm")});agenda.Refresh(true);Capture(agenda,Path.Combine(output,"03-今日小事与免打扰.png"),700,700);
                 var panel=app.Panel;Click(panel.Root,"Today");check(!app.Pet.IsVisible&&!app.Bubble.IsVisible&&!panel.IsVisible,"headless button wiring never shows a desktop window");
                 check(Find<TextBlock>(panel.Root,"Version").Text==AppVersion.AboutText,"about version is read from the installed assembly, not handwritten UI text");
                 panel.SelectTab(3);Capture(panel,Path.Combine(output,"07-关于草鱼与检查更新.png"),760,700);
@@ -82,13 +87,34 @@ namespace DesktopKitten {
                 Find<TextBox>(panel.Root,"ScheduleTitle").Text="重要约定测试";Find<CheckBox>(panel.Root,"ScheduleImportant").IsChecked=true;Click(panel.Root,"SaveSchedule");check(cfg.CustomSchedules.Any(r=>r.Title=="重要约定测试"&&r.AllowDuringQuiet&&r.Mode=="once"),"important and one-shot fields save through actual editor button");
                 panel.SelectTab(0);Capture(panel,Path.Combine(output,"04-控制面板入口.png"),760,700);
 
-                app.Completion.Preview(app.Pet.AnimationTime);check(!app.Bubble.PrepareContent(),"completion prompt still waits for its first displayed frame");app.Completion.TryPresentPrompt(app.Art.Complete.Sample(0,true));check(app.Bubble.PrepareContent()&&Find<WrapPanel>(bubble,"ReminderActions").Visibility==Visibility.Collapsed,"Codex completion has original content with no local reminder actions");
-                Capture(app.Bubble,Path.Combine(output,"05-任务完成提示保持原样.png"),284,174);Click(bubble,"Dismiss");check(!app.Completion.Active,"completion close still acknowledges the completion session");
+                cfg.QuietUntilUtc=DateTime.MinValue;cfg.QuietDailyEnabled=false;cfg.Pending.Clear();
+                app.Completion.Preview(app.Pet.AnimationTime);check(!app.Bubble.PrepareContent(),"completion prompt alone still waits for its first displayed frame");app.Completion.TryPresentPrompt(app.Art.Complete.Sample(0,true));check(app.Bubble.PrepareContent()&&Find<WrapPanel>(bubble,"ReminderActions").Visibility==Visibility.Collapsed,"Codex completion has no calendar actions");
+                check(Find<TextBlock>(bubble,"Body").Text=="喵喵喵"&&Find<TextBlock>(bubble,"Counter").Text==""&&Convert.ToString(Find<Button>(bubble,"Dismiss").Content)=="知道啦","completion uses only meows and a compact acknowledgement, never a cross");
+                Capture(app.Bubble,Path.Combine(output,"05-简洁任务完成提示.png"),284,180);
+                check(Find<ScrollViewer>(bubble,"BodyScroll").ComputedVerticalScrollBarVisibility==Visibility.Collapsed,"short meows fit fully without a redundant scrollbar");
+                cfg.Pending.Add(new Reminder{Key="priority-normal",Kind="custom",Title="普通日程",Message="日程不被任务完成提示挡住。",Due=DateTime.Now.AddMinutes(-2)});
+                check(app.Bubble.PrepareContent()&&Find<TextBlock>(bubble,"Title").Text=="普通日程"&&app.Completion.Active,"ordinary due reminder preempts completion without losing it");
+                var urgentRule=new ScheduleRule{Title="开会提醒",Mode="once",DueLocal=DateTime.Now.AddMinutes(-1),Enabled=false,Completed=true};cfg.CustomSchedules.Add(urgentRule);
+                cfg.Pending.Add(new Reminder{Key="priority-important",Kind="custom",Title=urgentRule.Title,ScheduleId=urgentRule.Id,Due=urgentRule.DueLocal,Message="到时间啦。"});agenda.Refresh(true);
+                var urgentRow=list.Items.Cast<AgendaRow>().Single(r=>r.Title==urgentRule.Title);urgentRow.SetImportant.Execute(true);app.Bubble.PrepareContent();
+                check(Find<TextBlock>(bubble,"Title").Text==urgentRule.Title&&Find<TextBlock>(bubble,"Tag").Text=="草鱼 · 重要提醒"&&urgentRule.AllowDuringQuiet,"today importance command immediately preempts an already visible ordinary note");
+                Capture(app.Bubble,Path.Combine(output,"10-重要日程优先.png"),284,222);
+                check(Find<Button>(bubble,"DoneReminder").FontSize==12&&Find<WrapPanel>(bubble,"CompletionActions").Visibility==Visibility.Collapsed,"reminder has larger action buttons and no dismiss control");
+                Click(bubble,"Dismiss");check(app.Completion.Active&&cfg.Pending.Count==2,"hidden completion acknowledgement cannot consume a reminder or its task session");
+                app.SnoozeReminder("priority-important",10);check(app.Bubble.PrepareContent()&&Find<TextBlock>(bubble,"Title").Text=="普通日程","explicit snooze is respected even for the highest priority");
+                app.ResolveReminder("priority-normal","done");check(app.Bubble.PrepareContent()&&Find<TextBlock>(bubble,"Body").Text=="喵喵喵"&&app.Completion.Active,"completion resumes after ready reminders are handled");
+                Click(bubble,"Dismiss");check(!app.Completion.Active&&cfg.Pending.Single().Key=="priority-important","acknowledgement does not touch snoozed calendar item");
+                panel.OpenScheduleEditor(urgentRule.Id);Find<CheckBox>(panel.Root,"ScheduleImportant").IsChecked=false;Click(panel.Root,"SaveSchedule");
+                check(!cfg.Pending.Single().AllowDuringQuiet&&cfg.CustomSchedules.Single(r=>r.Id==urgentRule.Id).Completed,"editing importance preserves fired one-shot completion and synchronizes its pending reminder");
+                app.Completion.Preview(app.Pet.AnimationTime);cfg.Pending.Single().SnoozeUntilUtc=DateTime.MinValue;cfg.Pending.Single().AllowDuringQuiet=true;
+                check(app.Bubble.PrepareContent()&&Find<TextBlock>(bubble,"Title").Text==urgentRule.Title&&!app.Completion.PromptReady,"important calendar note never waits for an animation handoff");
+                app.ResolveReminder("priority-important","skipped");app.Completion.TryPresentPrompt(app.Art.Complete.Sample(0,true));app.Bubble.PrepareContent();Click(bubble,"Dismiss");
+                app.SetQuietMinutes(30);
                 var saved=app.Store.Load();check(saved.QuietUntilUtc>DateTime.UtcNow&&saved.ReminderHistory.Count>=3,"UI workflow persists in isolated profile");
                 check(!app.Badge.WebViewAllocated&&app.Badge.ViewCreations==0,"new local features never initialize the official task browser");
                 check(!app.Pet.IsVisible&&!agenda.IsVisible&&!panel.IsVisible&&!app.Bubble.IsVisible,"no real desktop windows shown by verification");agenda.Close();
                 cfg.QuietDailyEnabled=false;cfg.QuietUntilUtc=DateTime.MinValue;cfg.Pending.Clear();cfg.Pending.Add(new Reminder{Key="summary-a",Kind="water",Title="该喝水了喵",Due=DateTime.Now});cfg.Pending.Add(new Reminder{Key="summary-b",Kind="meal",Title="该吃饭了喵",Due=DateTime.Now});
-                app.SetQuietMinutes(30);app.ResumeReminders();check(app.Bubble.PrepareContent()&&Find<WrapPanel>(bubble,"SummaryActions").Visibility==Visibility.Visible,"manual resume shows one combined reminder card");Capture(app.Bubble,Path.Combine(output,"06-免打扰结束汇总.png"),284,222);Click(bubble,"Dismiss");check(cfg.Pending.Count==0&&cfg.ReminderHistory.Any(r=>r.Key=="summary-a"&&r.Outcome=="closed")&&cfg.ReminderHistory.Any(r=>r.Key=="summary-b"&&r.Outcome=="closed"),"closing combined card never marks its notes completed");
+                app.SetQuietMinutes(30);app.ResumeReminders();check(app.Bubble.PrepareContent()&&Find<WrapPanel>(bubble,"SummaryActions").Visibility==Visibility.Visible,"manual resume shows one combined reminder card");Capture(app.Bubble,Path.Combine(output,"06-免打扰结束汇总.png"),284,222);Click(bubble,"SkipSummary");check(cfg.Pending.Count==0&&cfg.ReminderHistory.Any(r=>r.Key=="summary-a"&&r.Outcome=="skipped")&&cfg.ReminderHistory.Any(r=>r.Key=="summary-b"&&r.Outcome=="skipped"),"summary skip records skipped rather than closed or completed");
             }catch(Exception ex){failure=ex;}
             File.WriteAllText(Path.Combine(output,"reminder-ui-qa.json"),new JavaScriptSerializer().Serialize(new{ok=failure==null,checks,error=failure==null?null:failure.ToString(),headless=true,desktopUiAutomationUsed=false,liveMessagesSent=0,realCodexConnectionStarted=false,installedVersionRestarted=false}));
         }

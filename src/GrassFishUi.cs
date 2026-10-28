@@ -28,42 +28,70 @@ namespace DesktopKitten {
         public static void SaveRender(FrameworkElement element,string path){CuteUi.SaveRender(element,path);}
     }
     public sealed class BubbleWindow : Window {
-        readonly KittenApp app;readonly TextBlock title,body,counter,tag;readonly System.Windows.Shapes.Path arrow;readonly Grid root;readonly WrapPanel reminderActions,summaryActions;string reminderKey;bool summaryMode;
+        readonly KittenApp app;readonly TextBlock title,body,counter,tag;readonly System.Windows.Shapes.Path arrow;readonly Grid root;readonly WrapPanel reminderActions,summaryActions,completionActions;string reminderKey;NoticeKind noticeKind;
         public BubbleWindow(KittenApp app){
             this.app=app;Title="草鱼的小纸条";Width=284;Height=174;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;AllowsTransparency=true;Background=Brushes.Transparent;Topmost=true;ShowActivated=false;ShowInTaskbar=app.Qa;Resources=GrassFishUi.Create();
-            root=(Grid)XamlReader.Parse(@"<Grid xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><Border Margin='11' CornerRadius='21' Background='#FFFDF7' BorderBrush='#DCE7D4' BorderThickness='1' Padding='17,14'><Grid><Grid.RowDefinitions><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/><RowDefinition Height='*'/><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/></Grid.RowDefinitions><Grid><Border HorizontalAlignment='Left' Background='#EAF1DF' CornerRadius='9' Padding='9,4'><TextBlock Name='Tag' Text='草鱼 · 生活小提醒' FontSize='10' Foreground='#6C865C'/></Border><Button Name='Dismiss' Content='×' HorizontalAlignment='Right' Width='26' Height='26' Padding='0' Background='#F0EEE1' Foreground='#78806E' ToolTip='关闭这条提醒'/></Grid><TextBlock Name='Title' Grid.Row='1' FontSize='16' FontWeight='SemiBold' Margin='0,10,0,0' TextTrimming='CharacterEllipsis'/><ScrollViewer Grid.Row='2' VerticalScrollBarVisibility='Auto' Margin='0,7,0,9'><TextBlock Name='Body' FontSize='12' TextWrapping='Wrap' LineHeight='20' Foreground='#6A796C'/></ScrollViewer><WrapPanel Name='ReminderActions' Grid.Row='3' Margin='0,0,0,8' Visibility='Collapsed'><Button Name='DoneReminder' Content='完成' FontSize='10' Padding='10,6' Margin='0,0,6,0'/><Button Name='SnoozeReminder' Content='稍后提醒 ▾' FontSize='10' Padding='10,6' Margin='0,0,6,0'/><Button Name='SkipReminder' Content='这次跳过' FontSize='10' Padding='10,6'/></WrapPanel><WrapPanel Name='SummaryActions' Grid.Row='3' Margin='0,0,0,8' Visibility='Collapsed'><Button Name='ShowSummary' Content='查看今日小事' FontSize='10' Padding='10,6' Margin='0,0,7,0'/><Button Name='SnoozeSummary' Content='稍后10分钟' FontSize='10' Padding='10,6'/></WrapPanel><TextBlock Name='Counter' Grid.Row='4' FontSize='10' Foreground='#97A087'/></Grid></Border><Path Name='Arrow' Fill='#FFFDF7' Stroke='#DCE7D4' StrokeThickness='1'/></Grid>");
+            root=(Grid)XamlReader.Parse(@"<Grid xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'>
+ <Border Margin='11' CornerRadius='21' Background='#FFFDF7' BorderBrush='#DCE7D4' BorderThickness='1' Padding='17,14'><Grid>
+  <Grid.RowDefinitions><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/><RowDefinition Height='*'/><RowDefinition Height='Auto'/><RowDefinition Height='Auto'/></Grid.RowDefinitions>
+  <Border HorizontalAlignment='Left' Background='#EAF1DF' CornerRadius='9' Padding='9,4'><TextBlock Name='Tag' Text='草鱼 · 生活小提醒' FontSize='10' Foreground='#6C865C'/></Border>
+  <TextBlock Name='Title' Grid.Row='1' FontSize='16' FontWeight='SemiBold' Margin='0,10,0,0' TextTrimming='CharacterEllipsis'/>
+  <ScrollViewer Name='BodyScroll' Grid.Row='2' VerticalScrollBarVisibility='Auto' Margin='0,7,0,12'><TextBlock Name='Body' FontSize='12' TextWrapping='Wrap' LineHeight='20' Foreground='#6A796C'/></ScrollViewer>
+  <WrapPanel Name='ReminderActions' Grid.Row='3' Margin='0,0,0,8' Visibility='Collapsed'>
+   <Button Name='DoneReminder' Content='完成' FontSize='12' FontWeight='SemiBold' Padding='12,9' Margin='0,0,6,0' Background='#72947B' Foreground='White'/>
+   <Button Name='SnoozeReminder' Content='稍后提醒 ▾' FontSize='12' Padding='10,9' Margin='0,0,6,0' Background='#E7EEE1' Foreground='#526D56'/>
+   <Button Name='SkipReminder' Content='跳过' FontSize='12' Padding='12,9' Background='#F0EEE4' Foreground='#76816E'/>
+  </WrapPanel>
+  <WrapPanel Name='SummaryActions' Grid.Row='3' Margin='0,0,0,8' Visibility='Collapsed'>
+   <Button Name='ShowSummary' Content='查看小事' FontSize='11' Padding='10,8' Margin='0,0,5,0' Background='#72947B' Foreground='White'/>
+   <Button Name='SnoozeSummary' Content='稍后10分' FontSize='11' Padding='10,8' Margin='0,0,5,0'/>
+   <Button Name='SkipSummary' Content='这次跳过' FontSize='11' Padding='10,8' Background='#F0EEE4' Foreground='#76816E'/>
+  </WrapPanel>
+  <WrapPanel Name='CompletionActions' Grid.Row='3' Margin='0,0,0,4' Visibility='Collapsed'><Button Name='Dismiss' Content='知道啦' FontSize='12' Padding='14,8' ToolTip='收好这条任务完成提示'/></WrapPanel>
+  <TextBlock Name='Counter' Grid.Row='4' FontSize='10' Foreground='#97A087'/>
+ </Grid></Border><Path Name='Arrow' Fill='#FFFDF7' Stroke='#DCE7D4' StrokeThickness='1'/>
+</Grid>");
             Content=root;title=(TextBlock)root.FindName("Title");body=(TextBlock)root.FindName("Body");counter=(TextBlock)root.FindName("Counter");tag=(TextBlock)root.FindName("Tag");arrow=(System.Windows.Shapes.Path)root.FindName("Arrow");
             reminderActions=(WrapPanel)root.FindName("ReminderActions");
             summaryActions=(WrapPanel)root.FindName("SummaryActions");
+            completionActions=(WrapPanel)root.FindName("CompletionActions");
             ((Button)root.FindName("ShowSummary")).Click+=(s,e)=>app.OpenToday();((Button)root.FindName("SnoozeSummary")).Click+=(s,e)=>app.SnoozeReminderSummary();
-            ((Button)root.FindName("Dismiss")).Click+=(s,e)=>{if(summaryMode)app.CloseReminderSummary();else if(reminderKey!=null)app.ResolveReminder(reminderKey,"closed");else if(app.Completion.Active&&app.Completion.PromptReady)app.DismissReminder();};
+            ((Button)root.FindName("SkipSummary")).Click+=(s,e)=>{if(noticeKind==NoticeKind.Summary)app.SkipReminderSummary();};
+            ((Button)root.FindName("Dismiss")).Click+=(s,e)=>{if(noticeKind==NoticeKind.Completion)app.DismissCompletion();};
             ((Button)root.FindName("DoneReminder")).Click+=(s,e)=>{if(reminderKey!=null)app.ResolveReminder(reminderKey,"done");};
             ((Button)root.FindName("SkipReminder")).Click+=(s,e)=>{if(reminderKey!=null)app.ResolveReminder(reminderKey,"skipped");};
             ((Button)root.FindName("SnoozeReminder")).Click+=(s,e)=>{
-                string key=reminderKey;if(key==null)return;var button=(Button)s;var menu=new ContextMenu();
-                foreach(int value in new[]{5,10,30}){int delay=value;var item=new MenuItem{Header=delay+"分钟后"};item.Click+=(a,b)=>app.SnoozeReminder(key,delay);menu.Items.Add(item);}
-                var custom=new MenuItem{Header="自定义…"};custom.Click+=(a,b)=>SnoozeDialog.Open(app,key);menu.Items.Add(custom);button.ContextMenu=menu;menu.PlacementTarget=button;menu.IsOpen=true;
+                if(reminderKey!=null)SnoozeDialog.Choose(app,reminderKey,(Button)s);
             };SourceInitialized+=(s,e)=>WindowNative.NoActivate(this,!app.Qa);
         }
+        string raisedImportantKey,displayedNoticeKey;
         public void Refresh(){
-            if(!app.Pet.IsVisible||!PrepareContent()){reminderKey=null;Hide();return;}
+            if(!app.Pet.IsVisible||!PrepareContent()){reminderKey=null;raisedImportantKey=null;Hide();return;}
             Position(app.Pet);if(!IsVisible)Show();app.PositionBubble();
+            var current=app.Scheduler.Current(DateTime.Now,DateTime.UtcNow);var important=noticeKind==NoticeKind.Reminder&&current!=null&&current.AllowDuringQuiet?current.Key:null;
+            if(important!=null&&important!=raisedImportantKey)WindowNative.RaiseWithoutActivation(this);raisedImportantKey=important;
         }
         public bool PrepareContent(){
-            // Wait for the first displayed keyboard-exit frame, not for the
-            // subsequent waving loop. Keep ordinary reminders queued.
-            summaryMode=false;summaryActions.Visibility=Visibility.Collapsed;
-            if(app.Completion.Active&&!app.Completion.PromptReady){reminderKey=null;return false;}
-            reminderActions.Visibility=app.Completion.Active?Visibility.Collapsed:Visibility.Visible;reminderKey=null;
-            if(app.Completion.Active){title.Text="做好啦，快来验收喵";body.Text="草鱼拨开键盘，摇着尾巴等你看看。看完点右上角 ×，我就安静陪着你。";tag.Text="草鱼 · 任务完成";counter.Text="轻轻点 ×，草鱼收好尾巴回到待机";}
-            else {var r=app.Scheduler.Current(DateTime.Now,DateTime.UtcNow);if(r==null)return false;
-                if(!r.AllowDuringQuiet&&!ReminderWorkflow.IsPreview(r)&&app.Scheduler.SummaryVisible(DateTime.Now,DateTime.UtcNow)){
-                    summaryMode=true;reminderActions.Visibility=Visibility.Collapsed;summaryActions.Visibility=Visibility.Visible;var items=app.Scheduler.SummaryItems(DateTime.UtcNow);title.Text="安静时间结束啦";tag.Text="草鱼 · 小事汇总";body.Text="刚才有 "+items.Count+" 件小事等你："+string.Join("、",items.Take(3).Select(x=>x.Title))+(items.Count>3?"…":"。")+"可以一起去今日小事里看看。";counter.Text="点 × 只收起汇总，不计为完成";
-                }else{reminderKey=r.Key;title.Text=r.Kind=="water"||r.Kind=="meal"?ReminderWorkflow.Title(r.Kind):r.Title;body.Text=r.Message;tag.Text=r.Kind=="custom"?"草鱼 · 约定的小事":r.Kind=="water"?"草鱼 · 补充一点水分":"草鱼 · 好好吃饭";counter.Text=(app.Config.Pending.Count>1?"还有 "+(app.Config.Pending.Count-1)+" 张小纸条 · ":"")+"点 × 收好这条提醒";}}
+            var notice=NoticePresentation.Select(app.Scheduler,app.Completion,DateTime.Now,DateTime.UtcNow);noticeKind=notice.Kind;reminderKey=null;
+            string nextKey=noticeKind+":"+(notice.Reminder==null?"":notice.Reminder.Key);
+            if(nextKey!=displayedNoticeKey){var menu=((Button)root.FindName("SnoozeReminder")).ContextMenu;if(menu!=null)menu.IsOpen=false;displayedNoticeKey=nextKey;}
+            reminderActions.Visibility=noticeKind==NoticeKind.Reminder?Visibility.Visible:Visibility.Collapsed;
+            summaryActions.Visibility=noticeKind==NoticeKind.Summary?Visibility.Visible:Visibility.Collapsed;
+            completionActions.Visibility=noticeKind==NoticeKind.Completion?Visibility.Visible:Visibility.Collapsed;
+            counter.Text="";counter.Visibility=Visibility.Collapsed;
+            if(noticeKind==NoticeKind.None)return false;
+            if(noticeKind==NoticeKind.Completion){title.Text="做好啦，快来验收喵";body.Text="喵喵喵";tag.Text="草鱼 · 任务完成";}
+            else if(noticeKind==NoticeKind.Summary){
+                var items=app.Scheduler.SummaryItems(DateTime.UtcNow);title.Text="安静时间结束啦";tag.Text="草鱼 · 小事汇总";body.Text="有 "+items.Count+" 件小事等你："+string.Join("、",items.Take(3).Select(x=>x.Title))+(items.Count>3?"…":"。");
+            }else{
+                var r=notice.Reminder;reminderKey=r.Key;title.Text=r.Kind=="water"||r.Kind=="meal"?ReminderWorkflow.Title(r.Kind):r.Title;body.Text=r.Message;
+                tag.Text=r.AllowDuringQuiet?"草鱼 · 重要提醒":r.Kind=="custom"?"草鱼 · 约定的小事":r.Kind=="water"?"草鱼 · 补充一点水分":"草鱼 · 好好吃饭";
+                int waiting=app.Config.Pending.Count(x=>x.Key!=r.Key&&x.SnoozeUntilUtc<=DateTime.UtcNow);counter.Text=waiting>0?"还有 "+waiting+" 件小事待处理":"";counter.Visibility=waiting>0?Visibility.Visible:Visibility.Collapsed;
+            }
             return true;
         }
         public void Position(PetWindow pet){
-            var visual=new Rect(pet.Left,pet.Top,pet.Width,pet.Height);if(app.Badge!=null&&app.Badge.IsVisible&&!app.Badge.BadgeBounds.IsEmpty){visual=Rect.Union(visual,app.Badge.BadgeBounds);if(!app.Badge.TrayBounds.IsEmpty)visual=Rect.Union(visual,app.Badge.TrayBounds);}var area=WindowNative.WorkArea(pet,new Point(pet.CatBounds.Left+pet.CatBounds.Width/2,pet.CatBounds.Top+pet.CatBounds.Height/2));var pose=PopupPlacement.Place(visual,new Size(284,app.Completion.Active?174:222),area);
+            var visual=new Rect(pet.Left,pet.Top,pet.Width,pet.Height);if(app.Badge!=null&&app.Badge.IsVisible&&!app.Badge.BadgeBounds.IsEmpty){visual=Rect.Union(visual,app.Badge.BadgeBounds);if(!app.Badge.TrayBounds.IsEmpty)visual=Rect.Union(visual,app.Badge.TrayBounds);}var area=WindowNative.WorkArea(pet,new Point(pet.CatBounds.Left+pet.CatBounds.Width/2,pet.CatBounds.Top+pet.CatBounds.Height/2));var pose=PopupPlacement.Place(visual,new Size(284,noticeKind==NoticeKind.Completion?180:222),area);
             Width=pose.Bounds.Width;Height=pose.Bounds.Height;Left=pose.Bounds.Left;Top=pose.Bounds.Top;
             double ax=Math.Max(35,Math.Min(Width-35,pose.Anchor.X-Left)),ay=Math.Max(35,Math.Min(Height-35,pose.Anchor.Y-Top));string geom;
             if(pose.Side=="bottom")geom=string.Format(System.Globalization.CultureInfo.InvariantCulture,"M {0},{1} L {2},{3} L {4},{1}",ax-9,Height-11,ax,Height-1,ax+9);

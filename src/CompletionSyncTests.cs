@@ -70,9 +70,9 @@ namespace DesktopKitten {
                 app.ShowPet(false);var resumed=await Observe(app,output,"04-隐藏后恢复");observations.Add(resumed);check(!resumed.EarlyPrompt&&resumed.FirstPromptMs>=0,"restored pet presents its wave before showing the pending completion");Dismiss(app);
 
                 app.Scheduler.AddPreview("water");app.Bubble.Refresh();check(app.Config.Pending.Count==1&&app.Bubble.IsVisible,"existing local reminder is visible before completion");
-                app.PreviewCompletion();await Task.Delay(200);check(app.Bubble.IsVisible&&app.Completion.Active&&app.Config.Pending.Count==1,"completion transition shows its own prompt and preserves the reminder queue");
-                var queued=await Observe(app,output,"05-保留日程提醒");observations.Add(queued);check(!queued.EarlyPrompt&&queued.FirstPromptMs>=0,"queued reminder cannot make the completion prompt appear early");Dismiss(app);
-                check(!app.Completion.Active&&app.Config.Pending.Count==1&&app.Bubble.IsVisible,"closing completion restores the same queued reminder");Dismiss(app);check(app.Config.Pending.Count==0&&!app.Bubble.IsVisible,"local reminder close still removes only its own reminder");
+                app.PreviewCompletion();await Task.Delay(200);check(app.Bubble.IsVisible&&app.Completion.Active&&app.Config.Pending.Count==1&&((TextBlock)((FrameworkElement)app.Bubble.Content).FindName("Title")).Text=="该喝水了喵","due calendar reminder keeps priority during completion transition");
+                app.DismissReminder();check(app.Config.Pending.Count==0&&app.Completion.Active,"skipping a local reminder preserves the completion acknowledgement");
+                var queued=await Observe(app,output,"05-日程处理后恢复任务提示");observations.Add(queued);check(!queued.EarlyPrompt&&queued.FirstPromptMs>=0,"completion resumes only after its own rendered handoff and reminder resolution");Dismiss(app);check(!app.Completion.Active&&!app.Bubble.IsVisible,"acknowledgement clears only the completion");
 
                 app.PreviewCompletion();await Task.Delay(150);app.Config.MonitorCodex=false;Status(app,"review",3); // Manual preview remains valid without the optional Codex connection.
                 var offline=await Observe(app,output,"06-离线预览");observations.Add(offline);check(!offline.EarlyPrompt&&offline.FirstPromptMs>=0,"manual preview still synchronizes with Codex monitoring disabled");Dismiss(app);

@@ -23,9 +23,9 @@ namespace DesktopKitten {
             check(Motion.Frame(Motion.Durations["running"],820*100+121)==1,"running loops indefinitely");
             check(Motion.Frame(Motion.Idle,0)==0&&Motion.Frame(Motion.Idle,6600)==0,"idle loop");
             check(Motion.BlinkPhase(4050)==1&&Motion.BlinkPhase(4100)==2&&Motion.BlinkPhase(4200)==3&&Motion.BlinkPhase(4800)==0,"blink timing");
-            check(Motion.Direction(0,-100,-1,320)==0,"look up");check(Motion.Direction(100,0,-1,320)==4,"look right");check(Motion.Direction(-100,0,-1,320)==12,"look left");
-            check(Motion.Direction(0,100,-1,320)==8,"look down");check(Motion.Direction(10,10,-1,320)==-1,"deadzone");check(Motion.Direction(500,0,-1,320)==-1,"outside range");
-            check(Motion.Direction(Math.Sin(13*Math.PI/180)*100,-Math.Cos(13*Math.PI/180)*100,0,320)==0,"hysteresis");groups.Add("native frames and approved directions");
+            check(Motion.Direction(0,-100,-1,320)==0,"look up");check(Motion.Direction(100,0,-1,320)==8,"look right");check(Motion.Direction(-100,0,-1,320)==24,"look left");
+            check(Motion.Direction(0,100,-1,320)==16,"look down");check(Motion.Direction(10,10,-1,320)==-1,"deadzone");check(Motion.Direction(500,0,-1,320)==-1,"outside range");
+            check(Motion.Direction(Math.Sin(7.5*Math.PI/180)*100,-Math.Cos(7.5*Math.PI/180)*100,0,320)==0,"hysteresis");groups.Add("native frames and approved directions");
             check(new Settings().PetSize=="small","default small cat");
             check(PetSizing.Dimensions("small")==new System.Windows.Size(96,104),"small half-size");
             check(PetSizing.Dimensions("medium")==new System.Windows.Size(144,156),"medium three-quarter-size");
@@ -42,7 +42,7 @@ namespace DesktopKitten {
                 var leftArea=new System.Windows.Rect(-1920,0,1920,1080);
                 check(leftArea.Contains(PetSizing.BubbleBounds(new System.Windows.Rect(-100,40,size.Width,size.Height),new System.Windows.Size(286,176),leftArea)),"secondary monitor bubble "+preset);
             }
-            check(Motion.Direction(25,0,-1,320,38*.5)==4,"small cat scaled gaze deadzone");
+            check(Motion.Direction(25,0,-1,320,38*.5)==8,"small cat scaled gaze deadzone");
             check(Motion.Direction(25,0,-1,320)==-1,"large gaze deadzone unchanged");
             check(CuteUi.Create()["SizeChoice"] is System.Windows.Style,"size selector style parses");groups.Add("three size presets and scale-aware geometry");
             var panelLayout=(System.Windows.Controls.Grid)System.Windows.Markup.XamlReader.Parse(PanelWindow.Layout);
@@ -98,6 +98,7 @@ namespace DesktopKitten {
             bool unsafeWork=false;try{var invalidWork=new WorkAnimation{SchemaVersion=1,Width=272,Height=248,Entry=new[]{new WorkFrame{File="../bad.png",DurationMs=100}},Loop=work.Loop};invalidWork.Validate();}catch(InvalidDataException){unsafeWork=true;}
             check(unsafeWork,"unsafe work paths rejected");groups.Add("one-shot keyboard entrance and persistent working loop");
             for(int i=0;i<16;i++){var f=art.Frame(9+i/8,i%8,0);check(f.PixelWidth==192&&f.PixelHeight==208,"look frame "+i);}
+            GazeTests.Run(art,check);groups.Add("32 video-only gaze directions, strict assets and bounded shortest-path following");
             check(object.ReferenceEquals(art.Frame(0,0,0),art.Frame(0,0,2)),"reduced-motion first cell static");
             string assetDirectory=Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"assets");
             var sheets=new BitmapSource[4];
@@ -118,6 +119,7 @@ namespace DesktopKitten {
             PettingTests.Run(art,check);groups.Add("calibrated enjoyment and approved natural recovery player");
             GrassFishTests.Run(check);groups.Add("custom schedules migration and restart dedupe, 1452 popup positions, local task filtering and isolated named-pipe send fixtures");
             ReminderWorkflowTests.Run(check);groups.Add("complete-snooze-skip-close history, today agenda, manual/daily quiet, restart and legacy migration");
+            NoticePriorityTests.Run(check);groups.Add("unified reminder/task arbitration, important preemption, priority editing, snooze, quiet summary and restart");
             DistributionTests.Run(check);groups.Add("clean-user Codex profile discovery, package identity, component integrity and pet menu activation lifecycle");
             CodexCompatibilityTests.Run(check);groups.Add("capability-based endpoint discovery, bounded candidates, version-independent verified cache, legacy migration, corruption rejection and unknown-build fallback");
             NativeOverlayTests.Run(check);groups.Add("official notification lifecycle, activity summaries and multi-screen task overlay geometry");
