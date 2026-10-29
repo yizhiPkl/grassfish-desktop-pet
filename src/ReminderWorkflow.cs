@@ -39,10 +39,11 @@ namespace DesktopKitten {
     public sealed class NoticePresentation {
         public NoticeKind Kind;
         public Reminder Reminder;
-        public static NoticePresentation Select(Scheduler scheduler,CompletionSession completion,DateTime local,DateTime utc){
-            var reminder=scheduler.Current(local,utc);
+        public static NoticePresentation Select(Scheduler scheduler,CompletionSession completion,DateTime local,DateTime utc,Settings preferences=null){
+            // Visibility is a presentation preference, never a queue acknowledgement.
+            var reminder=preferences==null||preferences.ShowReminderPopup?scheduler.Current(local,utc):null;
             if(reminder!=null)return new NoticePresentation{Kind=!reminder.AllowDuringQuiet&&!ReminderWorkflow.IsPreview(reminder)&&scheduler.SummaryVisible(local,utc)?NoticeKind.Summary:NoticeKind.Reminder,Reminder=reminder};
-            return new NoticePresentation{Kind=completion.Active&&completion.PromptReady?NoticeKind.Completion:NoticeKind.None};
+            return new NoticePresentation{Kind=(preferences==null||preferences.ShowCompletionPopup)&&completion.Active&&completion.PromptReady?NoticeKind.Completion:NoticeKind.None};
         }
     }
     public sealed partial class Scheduler {

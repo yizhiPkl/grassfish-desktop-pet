@@ -40,6 +40,8 @@ namespace DesktopKitten {
         public Rect TrayBounds {get{return pose==null?Rect.Empty:pose.Tray;}}
         public NativeTaskPose Placement {get{return pose;}}
         public bool Ready {get{return ready;}}
+        internal bool PopupRequested {get{return app.Config.ShowTaskPopup||expanded;}}
+        internal void QaSetDraft(string id,string text){if(!app.HeadlessQa)throw new InvalidOperationException("Headless QA only");state.Set(id,text);}
         [DllImport("gdi32.dll")]static extern IntPtr CreateRoundRectRgn(int a,int b,int c,int d,int e,int f);
         [DllImport("gdi32.dll")]static extern int CombineRgn(IntPtr target,IntPtr a,IntPtr b,int mode);
         [DllImport("gdi32.dll")]static extern bool DeleteObject(IntPtr target);
@@ -113,15 +115,18 @@ namespace DesktopKitten {
         public void Refresh(){
             ledger.Apply(app.Codex.Current);
             var c=app.Codex.Current;
-            if(!app.Pet.IsVisible||!app.Config.MonitorCodex||!(c.Connected||c.DesktopRunning)){LastVisibilityReason=!app.Pet.IsVisible?"pet-hidden":!app.Config.MonitorCodex?"integration-disabled":"codex-not-running";expanded=false;ReleaseView();SetInteractive(false);Hide();return;}
+            bool petAvailable=app.Pet.IsVisible||app.HeadlessQa;
+            if(!petAvailable||!app.Config.MonitorCodex||!(c.Connected||c.DesktopRunning)){LastVisibilityReason=!petAvailable?"pet-hidden":!app.Config.MonitorCodex?"integration-disabled":"codex-not-running";expanded=false;ReleaseView();SetInteractive(false);Hide();return;}
+            if(!PopupRequested){LastVisibilityReason="popup-disabled";ReleaseView();SetInteractive(false);Hide();return;}
             LastVisibilityReason=c.Connected?(ActivityCount==0?"connected-empty":"connected-tasks"):"reconnecting";
             if(!c.Connected){SetInteractive(false);ReleaseView();}
-            Position();if(!IsVisible)Show();DrawLight();if(expanded&&c.Connected){warmTimer.Stop();if(view!=null&&ready){view.CoreWebView2.Resume();view.Visibility=Visibility.Visible;}else if(Error==null)StartView();}Publish();
+            Position();if(!IsVisible&&!app.HeadlessQa)Show();DrawLight();if(expanded&&c.Connected&&!app.HeadlessQa){warmTimer.Stop();if(view!=null&&ready){view.CoreWebView2.Resume();view.Visibility=Visibility.Visible;}else if(Error==null)StartView();}Publish();
         }
         public void Expand(){if(!expanded&&view!=null&&ready)WarmReopens++;expanded=true;Error=null;warmTimer.Stop();app.Codex.Refresh();Refresh();}
         public void Collapse(){expanded=false;SetInteractive(false);if(view!=null){view.Visibility=Visibility.Hidden;Publish();if(!ready)ReleaseView();else{warmTimer.Stop();warmTimer.Start();SuspendHidden(view,generation);}}Refresh();}
         async void SuspendHidden(WebView2CompositionControl target,int token){try{await Task.Delay(100);if(!Current(target,token)||expanded||!ready)return;await target.CoreWebView2.TrySuspendAsync();if(Current(target,token)&&expanded)target.CoreWebView2.Resume();}catch(Exception){/* Best effort only. The fixed idle deadline still disposes the controller. */}}
         public void ReleaseImmediately(){expanded=false;SetInteractive(false);ReleaseView();Refresh();}
+        public void SuppressPopup(){expanded=false;SetInteractive(false);ReleaseView();Hide();}
         public void QaExpireWarmCache(){if(!app.Qa)throw new InvalidOperationException("QA only");warmTimer.Stop();if(!expanded)ReleaseView();}
         public void Position(){
             var pet=app.Pet;if(double.IsNaN(pet.Left)||double.IsNaN(pet.Top))return;

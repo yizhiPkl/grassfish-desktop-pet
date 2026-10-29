@@ -12,13 +12,14 @@ namespace DesktopKitten {
         public bool AwaitingHandoff { get; private set; }
         public bool Previewing { get; private set; }
         public bool PromptReady { get; private set; }
+        public int Sequence { get; private set; }
         public void Update(Snapshot value, double now, bool enabled) {
             if(value==null)return;
             if(!initialized){initialized=true;observedEnd=value.EndAt;wasRunning=value.State=="running";return;}
             if((!enabled&&!Previewing) || value.State=="running" || value.State=="waiting" || value.State=="failed") {
                 Active=false;AwaitingHandoff=false;Previewing=false;PromptReady=false;
             } else if(enabled && value.State=="review" && value.EndAt>observedEnd && value.EndAt>dismissedEnd) {
-                Active=true;AwaitingHandoff=wasRunning;Previewing=false;PromptReady=false;started=now;
+                Active=true;AwaitingHandoff=wasRunning;Previewing=false;PromptReady=false;started=now;Sequence++;
             }
             if(value.EndAt>observedEnd)observedEnd=value.EndAt;
             wasRunning=value.State=="running";
@@ -38,6 +39,6 @@ namespace DesktopKitten {
         public double Elapsed(double now){return Math.Max(0,now-started);}
         public bool SuppressReview(Snapshot value){return value.State=="review" && value.EndAt<=dismissedEnd;}
         public void Dismiss(){if(observedEnd>dismissedEnd)dismissedEnd=observedEnd;Active=false;AwaitingHandoff=false;Previewing=false;PromptReady=false;}
-        public void Preview(double now){Active=true;AwaitingHandoff=false;Previewing=true;PromptReady=false;started=now;}
+        public void Preview(double now){Active=true;AwaitingHandoff=false;Previewing=true;PromptReady=false;started=now;Sequence++;}
     }
 }

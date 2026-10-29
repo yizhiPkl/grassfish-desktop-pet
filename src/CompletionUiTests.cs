@@ -17,7 +17,7 @@ namespace DesktopKitten {
             Directory.CreateDirectory(output);var checks=new List<string>();Exception failure=null;
             Action<bool,string> check=(ok,label)=>{if(!ok)throw new Exception(label);checks.Add(label);};
             try{
-                check(app.Qa&&app.HeadlessQa,"completion tests use isolated settings and no visible desktop windows");app.Config.MonitorCodex=false;app.Config.FollowMouse=false;app.Config.Animations=true;app.Config.Pending.Clear();app.Config.WaterIntervalEnabled=false;app.Config.MealEnabled=false;
+                check(app.Qa&&app.HeadlessQa,"completion tests use isolated settings and no visible desktop windows");app.Config.ShowCompletionPopup=app.Config.ShowTaskPopup=app.Config.ShowReminderPopup=true;app.Config.MonitorCodex=false;app.Config.FollowMouse=false;app.Config.Animations=true;app.Config.Pending.Clear();app.Config.WaterIntervalEnabled=false;app.Config.MealEnabled=false;
                 var clip=app.Art.Complete;
                 foreach(var size in new[]{"small","medium","large"}){
                     app.Config.PetSize=size;app.Pet.ApplySize();Preview(app,clip.EntryDurationMs+1200);double scale=PetSizing.Scale(size);

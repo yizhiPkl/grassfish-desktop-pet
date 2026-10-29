@@ -72,7 +72,7 @@ namespace DesktopKitten {
             if(important!=null&&important!=raisedImportantKey)WindowNative.RaiseWithoutActivation(this);raisedImportantKey=important;
         }
         public bool PrepareContent(){
-            var notice=NoticePresentation.Select(app.Scheduler,app.Completion,DateTime.Now,DateTime.UtcNow);noticeKind=notice.Kind;reminderKey=null;
+            var notice=NoticePresentation.Select(app.Scheduler,app.Completion,DateTime.Now,DateTime.UtcNow,app.Config);noticeKind=notice.Kind;reminderKey=null;
             string nextKey=noticeKind+":"+(notice.Reminder==null?"":notice.Reminder.Key);
             if(nextKey!=displayedNoticeKey){var menu=((Button)root.FindName("SnoozeReminder")).ContextMenu;if(menu!=null)menu.IsOpen=false;displayedNoticeKey=nextKey;}
             reminderActions.Visibility=noticeKind==NoticeKind.Reminder?Visibility.Visible:Visibility.Collapsed;

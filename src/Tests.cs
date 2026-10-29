@@ -120,6 +120,7 @@ namespace DesktopKitten {
             GrassFishTests.Run(check);groups.Add("custom schedules migration and restart dedupe, 1452 popup positions, local task filtering and isolated named-pipe send fixtures");
             ReminderWorkflowTests.Run(check);groups.Add("complete-snooze-skip-close history, today agenda, manual/daily quiet, restart and legacy migration");
             NoticePriorityTests.Run(check);groups.Add("unified reminder/task arbitration, important preemption, priority editing, snooze, quiet summary and restart");
+            PopupPreferencesTests.Run(check);groups.Add("independent popup preferences, legacy persistence, hidden reminder arbitration and fresh-entry completion acknowledgement without timers");
             DistributionTests.Run(check);groups.Add("clean-user Codex profile discovery, package identity, component integrity and pet menu activation lifecycle");
             CodexCompatibilityTests.Run(check);groups.Add("capability-based endpoint discovery, bounded candidates, version-independent verified cache, legacy migration, corruption rejection and unknown-build fallback");
             NativeOverlayTests.Run(check);groups.Add("official notification lifecycle, activity summaries and multi-screen task overlay geometry");

@@ -11,6 +11,7 @@ namespace DesktopKitten {
     public sealed class Settings {
         public int SchemaVersion = 1;
         public bool MonitorCodex = true, FollowMouse = true, Animations = true, WaterIntervalEnabled = true, WaterTimesEnabled = false, MealEnabled = true;
+        public bool ShowCompletionPopup = true, ShowTaskPopup = true, ShowReminderPopup = true;
         public int WaterMinutes = 30, FollowRadius = 320;
         public string WaterTimes = "10:00, 15:00", MealTimes = "11:30, 18:30";
         public string PetSize = "small";

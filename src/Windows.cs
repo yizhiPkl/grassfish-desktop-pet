@@ -131,6 +131,10 @@ namespace DesktopKitten {
         readonly Stopwatch clock=Stopwatch.StartNew();
         readonly WorkSession workSession=new WorkSession();
         readonly CompletionReturn completionReturn;
+        readonly CompletionAttention completionAttention=new CompletionAttention();
+        readonly byte[] pointerPixel=new byte[4];
+        Point? qaCompletionPointer;
+        Point? lastCompletionPointer;
         WorkPose lastCompletionPose;
         double completionIdleUntil;
         readonly PettingPlayer petting;
@@ -162,14 +166,10 @@ namespace DesktopKitten {
             Loaded+=(s,e)=> {var area=WindowNative.WorkArea(this,WindowNative.Cursor(this));Left=app.Config.X<0?area.Right-Width-48:app.Config.X;Top=app.Config.Y<0?area.Bottom-Height-32:app.Config.Y;WindowNative.Clamp(this);Render();};
             MouseLeftButtonDown+=(s,e)=> {
                 if(e.ClickCount==2){app.OpenPanel();e.Handled=true;return;}
-                mouseDown=true;down=WindowNative.Cursor(this);origin=new System.Windows.Point(CatBounds.Left,CatBounds.Top);CaptureMouse();
+                BeginPointerPress(WindowNative.Cursor(this));CaptureMouse();
             };
-            MouseMove+=(s,e)=> {
-                if(!mouseDown)return;var current=WindowNative.Cursor(this);var delta=current-down;
-                if(!dragging&&delta.Length>4)dragging=true;
-                if(dragging){double x=origin.X+delta.X;if(state!="running-left"&&state!="running-right")SetState(delta.X<0?"running-left":"running-right");else if(Math.Abs(x-CatBounds.Left)>0.2)SetState(x<CatBounds.Left?"running-left":"running-right");Left=x;Top=origin.Y+delta.Y;app.PositionBubble();}
-            };
-            MouseLeftButtonUp+=(s,e)=> {if(!mouseDown)return;mouseDown=false;ReleaseMouseCapture();if(dragging){dragging=false;WindowNative.Clamp(this);app.Config.X=Left;app.Config.Y=Top;app.Persist();UpdateStatus();}};
+            MouseMove+=(s,e)=>MovePointer(WindowNative.Cursor(this));
+            MouseLeftButtonUp+=(s,e)=> {if(!mouseDown)return;EndPointerPress();ReleaseMouseCapture();};
             LostMouseCapture+=(s,e)=> {mouseDown=false;if(dragging){dragging=false;UpdateStatus();}};
             MouseEnter+=(s,e)=>{hovered=true;if(petting==null&&!dragging&&app.Status.State!="running"&&!app.Completion.Active)SetState("jumping");};
             MouseLeave+=(s,e)=>{hovered=false;};
@@ -182,6 +182,33 @@ namespace DesktopKitten {
             IsVisibleChanged+=(s,e)=>{if(IsVisible)timer.Start();else timer.Stop();};
             LocationChanged+=(s,e)=>app.PositionBubble();SizeChanged+=(s,e)=>app.PositionBubble();
             Closed+=(s,e)=>timer.Stop();
+        }
+        void BeginPointerPress(Point current){mouseDown=true;down=current;origin=new Point(CatBounds.Left,CatBounds.Top);}
+        void MovePointer(Point current){
+            if(!mouseDown)return;var delta=current-down;
+            if(!dragging&&delta.Length>4){
+                // A drag is acknowledgement, not a new review of the same turn.
+                // Do this before the walking pose takes ownership of the canvas.
+                if(!app.Config.ShowCompletionPopup)app.DismissCompletion();
+                dragging=true;
+            }
+            if(dragging){double x=origin.X+delta.X;if(state!="running-left"&&state!="running-right")SetState(delta.X<0?"running-left":"running-right");else if(Math.Abs(x-CatBounds.Left)>0.2)SetState(x<CatBounds.Left?"running-left":"running-right");Left=x;Top=origin.Y+delta.Y;app.PositionBubble();}
+        }
+        void EndPointerPress(){mouseDown=false;if(dragging){dragging=false;WindowNative.Clamp(this);app.Config.X=CatBounds.Left;app.Config.Y=CatBounds.Top;app.Persist();UpdateStatus();}}
+        internal void QaCompletionPointer(Point point){if(!app.HeadlessQa)throw new InvalidOperationException("Headless QA only");qaCompletionPointer=point;}
+        internal void QaBeginPress(Point point){if(!app.HeadlessQa)throw new InvalidOperationException("Headless QA only");BeginPointerPress(point);}
+        internal void QaMovePointer(Point point){if(!app.HeadlessQa)throw new InvalidOperationException("Headless QA only");MovePointer(point);}
+        internal void QaEndPress(){if(!app.HeadlessQa)throw new InvalidOperationException("Headless QA only");EndPointerPress();}
+        bool CompletionPointerInside(out bool moved){
+            moved=false;if(app.HeadlessQa&&!qaCompletionPointer.HasValue)return false;
+            var absolute=app.HeadlessQa?qaCompletionPointer.Value:WindowNative.Cursor(this);
+            moved=lastCompletionPointer.HasValue&&(absolute-lastCompletionPointer.Value).Length>.1;lastCompletionPointer=absolute;
+            if(!app.HeadlessQa&&!IsMouseOver)return false;
+            var point=app.HeadlessQa?absolute:absolute-new Vector(Left,Top);
+            var bitmap=picture.Source as BitmapSource;
+            int x=(int)Math.Floor(point.X/displayScale),y=(int)Math.Floor(point.Y/displayScale);
+            if(bitmap==null||point.X<0||point.Y<0||x>=bitmap.PixelWidth||y>=bitmap.PixelHeight||bitmap.Format.BitsPerPixel!=32)return false;
+            bitmap.CopyPixels(new Int32Rect(x,y,1,1),pointerPixel,4,0);return pointerPixel[3]>=32;
         }
         void AddMenu(string text,Action action){var item=new MenuItem{Header=text};item.Click+=(s,e)=>action();ContextMenu.Items.Add(item);}
         public void ApplySize(){
@@ -272,6 +299,8 @@ namespace DesktopKitten {
                 var pose=app.Art.Complete.Sample(app.Completion.Elapsed(now),app.Config.Animations);string completeKey="complete:"+pose.Key;
                 lastCompletionPose=pose;
                 if(completeKey!=frameKey){picture.Source=app.Art.CompletionFrame(pose);frameKey=completeKey;FrameUpdates++;}
+                bool moved,inside=CompletionPointerInside(out moved);
+                if(completionAttention.Observe(app.Completion.Sequence,app.Completion.PromptReady,inside,app.Config.ShowCompletionPopup,now,moved)&&!mouseDown&&!dragging&&(ContextMenu==null||!ContextMenu.IsOpen))app.DismissCompletion();
                 if(app.Completion.TryPresentPrompt(pose))app.Bubble.Refresh();gaze=-1;return;
             }
             int row=Motion.Rows[active],column=app.Config.Animations?Motion.Frame(Motion.Durations[active],elapsed):0, phase=row==0&&app.Config.Animations?Motion.BlinkPhase(pettingIdleOrigin<0?now:now-pettingIdleOrigin):0;

@@ -39,7 +39,7 @@ namespace DesktopKitten {
         int age;
         readonly Stopwatch performance=Stopwatch.StartNew();
         public KittenApp(string[] args,EventWaitHandle reopen) {
-            ShutdownMode=ShutdownMode.OnExplicitShutdown;this.reopen=reopen;HeadlessQa=args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test");Qa=HeadlessQa||args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview");
+            ShutdownMode=ShutdownMode.OnExplicitShutdown;this.reopen=reopen;HeadlessQa=args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test")||args.Contains("--popup-ui-test");Qa=HeadlessQa||args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview");
             Exe=System.Reflection.Assembly.GetExecutingAssembly().Location;
             string root=Path.GetDirectoryName(Exe);
             var directory=Qa?Path.Combine(root,args.Contains("--native-task-preview")?"native-qa-profile":"qa-profile"):Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"DesktopKitten");
@@ -65,6 +65,7 @@ namespace DesktopKitten {
             menu.Items.Add(new Forms.ToolStripSeparator());AddMenu(menu,"退出桌面小猫",Quit);
             seconds=new DispatcherTimer(DispatcherPriority.Background) {Interval=TimeSpan.FromSeconds(1)};seconds.Tick+=Tick;
             Startup+=(s,e)=>{
+                if(args.Contains("--popup-ui-test")){int index=Array.IndexOf(args,"--popup-ui-test");Dispatcher.BeginInvoke(new Action(async()=>{try{await PopupPreferencesUiTests.Run(this,args[index+1]);}finally{Quit();}}));return;}
                 if(args.Contains("--completion-ui-test")){int index=Array.IndexOf(args,"--completion-ui-test");Dispatcher.BeginInvoke(new Action(async()=>{try{await CompletionUiTests.Run(this,args[index+1]);}finally{Quit();}}));return;}
                 if(HeadlessQa){int index=Array.IndexOf(args,"--reminder-ui-test");try{ReminderUiTests.Run(this,args[index+1]);}finally{Quit();}return;}
                 Pet.Show();if(!args.Contains("--background"))OpenPanel();Bubble.Refresh();Monitor.Enable(Config.MonitorCodex);if(!Qa){Monitor.Start();Codex.Enable(Config.MonitorCodex);Codex.Start();}Badge.Refresh();seconds.Start();
@@ -81,7 +82,7 @@ namespace DesktopKitten {
         void Tick(object sender,EventArgs e) {
             age++;if(reopen.WaitOne(0))OpenPanel();
             if(!Qa&&(age==30||age%3600==0))CheckUpdates(false);
-            if(Scheduler.Tick(DateTime.Now,DateTime.UtcNow)){Persist();if(Scheduler.Current(DateTime.Now,DateTime.UtcNow)!=null)ShowPet(false);Bubble.Refresh();}
+            if(Scheduler.Tick(DateTime.Now,DateTime.UtcNow)){Persist();if(Config.ShowReminderPopup&&Scheduler.Current(DateTime.Now,DateTime.UtcNow)!=null)ShowPet(false);Bubble.Refresh();}
             if(panel!=null&&panel.IsVisible)panel.RefreshStatus();
             if(today!=null&&today.IsVisible)today.Refresh();
             if(Badge.IsVisible||Bubble.IsVisible)PositionBubble();
@@ -120,7 +121,14 @@ namespace DesktopKitten {
         void RefreshPanel(){if(panel!=null)panel.RefreshStatus();if(today!=null)today.Refresh();}
         public void OpenToday(){if(today==null){today=new TodayWindow(this);today.Closed+=(s,e)=>today=null;}today.Refresh(true);if(!HeadlessQa){today.Show();today.Activate();}}
         public void OpenSchedule(string id){OpenPanel();Panel.OpenScheduleEditor(id);}
-        public void LocalRemindersChanged(){Persist();if(Scheduler.Current(DateTime.Now,DateTime.UtcNow)!=null)ShowPet(false);Bubble.Refresh();RefreshPanel();}
+        public void LocalRemindersChanged(){Persist();if(Config.ShowReminderPopup&&Scheduler.Current(DateTime.Now,DateTime.UtcNow)!=null)ShowPet(false);Bubble.Refresh();RefreshPanel();}
+        public void SetPopupPreferences(bool completion,bool tasks,bool reminders){
+            bool oldCompletion=Config.ShowCompletionPopup,oldTasks=Config.ShowTaskPopup,oldReminders=Config.ShowReminderPopup;
+            Config.ShowCompletionPopup=completion;Config.ShowTaskPopup=tasks;Config.ShowReminderPopup=reminders;
+            try{Store.Save(Config);}catch{Config.ShowCompletionPopup=oldCompletion;Config.ShowTaskPopup=oldTasks;Config.ShowReminderPopup=oldReminders;throw;}
+            if(oldTasks&&!tasks)Badge.SuppressPopup();
+            Bubble.Refresh();Badge.Refresh();RefreshPanel();
+        }
         public bool ResolveReminder(string key,string outcome){if(!Scheduler.Resolve(key,outcome,DateTime.UtcNow))return false;LocalRemindersChanged();return true;}
         public void ResolveAgenda(string key,string outcome,bool upcoming){bool changed=Scheduler.Resolve(key,outcome,DateTime.UtcNow);if(!changed&&upcoming)changed=Scheduler.ResolvePlanned(key,outcome,DateTime.Now,DateTime.UtcNow);if(changed)LocalRemindersChanged();}
         public bool SnoozeReminder(string key,int minutes){if(!Scheduler.Snooze(key,minutes,DateTime.UtcNow))return false;LocalRemindersChanged();return true;}
@@ -138,7 +146,7 @@ namespace DesktopKitten {
         public void OpenTasks(){if(!Pet.IsVisible)ShowPet(false);Badge.Expand();Codex.Refresh();}
         public void Preview(string kind){Scheduler.AddPreview(kind);Persist();ShowPet(false);Bubble.Refresh();RefreshPanel();}
         public void DismissCompletion(){if(!Completion.Active||!Completion.PromptReady)return;Pet.BeginCompletionReturn();Completion.Dismiss();Pet.UpdateStatus();Bubble.Refresh();RefreshPanel();}
-        public void DismissReminder(){var notice=NoticePresentation.Select(Scheduler,Completion,DateTime.Now,DateTime.UtcNow);if(notice.Kind==NoticeKind.Completion)DismissCompletion();else if(notice.Kind==NoticeKind.Reminder)ResolveReminder(notice.Reminder.Key,"skipped");else if(notice.Kind==NoticeKind.Summary)SkipReminderSummary();}
+        public void DismissReminder(){var notice=NoticePresentation.Select(Scheduler,Completion,DateTime.Now,DateTime.UtcNow,Config);if(notice.Kind==NoticeKind.Completion)DismissCompletion();else if(notice.Kind==NoticeKind.Reminder)ResolveReminder(notice.Reminder.Key,"skipped");else if(notice.Kind==NoticeKind.Summary)SkipReminderSummary();}
         public void PreviewCompletion(){if(Art.Complete==null||Status.State=="running"||Status.State=="waiting")return;Completion.Preview(Pet.AnimationTime);Pet.UpdateStatus();ShowPet(false);Bubble.Refresh();}
         public void Quit(){if(quitting)return;quitting=true;Persist();Updates.Dispose();seconds.Stop();if(updateWindow!=null)updateWindow.Close();if(today!=null)today.Close();if(panel!=null)panel.CloseForExit();Badge.Close();Bubble.Close();Pet.Close();Shutdown();}
         void RenderPreviews(){
@@ -191,7 +199,7 @@ namespace DesktopKitten {
                 try {var result=Tests.Run();if(args.Length>1){Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1])));File.WriteAllText(args[1],result);}return 0;}
                 catch(Exception e){if(args.Length>1)File.WriteAllText(args[1],new JavaScriptSerializer().Serialize(new{ok=false,error=e.ToString()}));return 1;}
             }
-            string scope="Local\\DesktopKitten-"+Environment.UserName+(args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview")||args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test")?"-QA":"");bool first;
+            string scope="Local\\DesktopKitten-"+Environment.UserName+(args.Contains("--qa")||args.Contains("--render-previews")||args.Contains("--native-task-preview")||args.Contains("--live-navigation-preview")||args.Contains("--completion-sync-preview")||args.Contains("--reminder-ui-test")||args.Contains("--completion-ui-test")||args.Contains("--popup-ui-test")?"-QA":"");bool first;
             using(var mutex=new Mutex(true,scope,out first)) {
                 var reopen=new EventWaitHandle(false,EventResetMode.AutoReset,scope+"-Open");
                 if(!first){reopen.Set();reopen.Dispose();return 0;}

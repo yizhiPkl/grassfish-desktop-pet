@@ -23,7 +23,7 @@ namespace DesktopKitten {
                 check(!app.TrayMenuLabels.Any(label=>label.Contains("预览")),"system tray menu also contains no water, meal or completion previews");
                 check(app.TrayMenuLabels.Last()=="退出桌面小猫","system tray exit command is the final menu option");
                 check(menuLabels.Contains("今日小事")&&!app.Pet.ContextMenu.StaysOpen,"right-click menu preserves normal commands with outside dismissal enabled");
-                var cfg=app.Config;cfg.Pending.Clear();cfg.ReminderHistory.Clear();cfg.Fired.Clear();cfg.CustomSchedules.Clear();cfg.WaterIntervalEnabled=false;cfg.WaterTimesEnabled=false;cfg.MealEnabled=false;cfg.QuietUntilUtc=DateTime.MinValue;cfg.QuietBypassUntilUtc=DateTime.MinValue;cfg.QuietDailyEnabled=false;cfg.MonitorCodex=false;
+                var cfg=app.Config;cfg.ShowCompletionPopup=cfg.ShowTaskPopup=cfg.ShowReminderPopup=true;cfg.Pending.Clear();cfg.ReminderHistory.Clear();cfg.Fired.Clear();cfg.CustomSchedules.Clear();cfg.WaterIntervalEnabled=false;cfg.WaterTimesEnabled=false;cfg.MealEnabled=false;cfg.QuietUntilUtc=DateTime.MinValue;cfg.QuietBypassUntilUtc=DateTime.MinValue;cfg.QuietDailyEnabled=false;cfg.MonitorCodex=false;
                 var bubble=(FrameworkElement)app.Bubble.Content;
                 cfg.Pending.Add(new Reminder{Key="qa-water",Kind="water",Title=ReminderWorkflow.Title("water"),Message="陪小猫喝口水吧，慢慢来就好。",Due=DateTime.Now});
                 check(app.Bubble.PrepareContent(),"ready reminder prepares visible content");
